@@ -21,6 +21,31 @@ public class GreyImage extends ImageWriter {
         return greyArray;
     }
 
+    // Implemented Methods
+    @Override
+    public BufferedImage makeBufferedImage() {
+        BufferedImage image = new BufferedImage(greyArray[0].length, greyArray.length, BufferedImage.TYPE_INT_RGB);
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                int color = (greyArray[y][x] << 16) + (greyArray[y][x] << 8) + greyArray[y][x];
+                image.setRGB(x, y, color);
+            }
+        }
+        return image;
+    }
+
+    @Override
+    public GreyImage makeFromBufferedImage(BufferedImage image) {
+        int[][] greyArray = new int[image.getHeight()][image.getWidth()];
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                int RGB = image.getRGB(x, y);
+                greyArray[y][x] = (((RGB & 16711680) >> 16) + ((RGB & 65280) >> 8) + (RGB & 255))/3;
+            }
+        }
+        return(new GreyImage(greyArray));
+    }
+
     // Mathematical Filters for the ImageWriter:
     public GreyImage gaussian() {
         int[][] output = new int[greyArray.length][greyArray[0].length];
@@ -88,31 +113,6 @@ public class GreyImage extends ImageWriter {
             }
         }
         return (new GreyImage(output));
-    }
-
-    // Implemented Methods
-    @Override
-    public BufferedImage makeBufferedImage() {
-        BufferedImage image = new BufferedImage(greyArray[0].length, greyArray.length, BufferedImage.TYPE_INT_RGB);
-        for (int y = 0; y < image.getHeight(); y++) {
-            for (int x = 0; x < image.getWidth(); x++) {
-                int color = (greyArray[y][x] << 16) + (greyArray[y][x] << 8) + greyArray[y][x];
-                image.setRGB(x, y, color);
-            }
-        }
-        return image;
-    }
-
-    @Override
-    public GreyImage makeFromBufferedImage(BufferedImage image) {
-        int[][] greyArray = new int[image.getHeight()][image.getWidth()];
-        for (int y = 0; y < image.getHeight(); y++) {
-            for (int x = 0; x < image.getWidth(); x++) {
-                int RGB = image.getRGB(x, y);
-                greyArray[y][x] = (((RGB & 16711680) >> 16) + ((RGB & 65280) >> 8) + (RGB & 255))/3;
-            }
-        }
-        return(new GreyImage(greyArray));
     }
 
 }

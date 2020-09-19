@@ -1,3 +1,5 @@
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -40,6 +42,7 @@ public class RGBImage extends ImageWriter {
     }
 
     // Getter
+    @JsonIgnore
     public int[][][] getRgbArray() {
         return rgbArray;
     }
@@ -60,9 +63,10 @@ public class RGBImage extends ImageWriter {
 
     @Override
     public RGBImage makeFromBufferedImage(BufferedImage image) {
-        int RGB;
+
         int[][][] rgbArray = new int[image.getHeight()][image.getWidth()][3];
 
+        int RGB;
         for (int y = 0; y < image.getHeight(); y++) {
             for (int x = 0; x < image.getWidth(); x++) {
                 RGB = image.getRGB(x, y);
@@ -74,36 +78,16 @@ public class RGBImage extends ImageWriter {
         return (new RGBImage(rgbArray));
     }
 
-
     public void makeGreenCross(int x, int y){
-        rgbArray[y][x][1] = 255;
-        rgbArray[y][x + 1][1] = 255;
-        rgbArray[y][x + 2][1] = 255;
-        rgbArray[y][x - 1][1] = 255;
-        rgbArray[y][x - 2][1] = 255;
-        rgbArray[y - 1][x][1] = 255;
-        rgbArray[y - 2][x][1] = 255;
-        rgbArray[y + 1][x][1] = 255;
-        rgbArray[y + 2][x][1] = 255;
-        rgbArray[y][x][0] = 0;
-        rgbArray[y][x + 1][0] = 0;
-        rgbArray[y][x + 2][0] = 0;
-        rgbArray[y][x - 1][0] = 0;
-        rgbArray[y][x - 2][0] = 0;
-        rgbArray[y - 1][x][0] = 0;
-        rgbArray[y - 2][x][0] = 0;
-        rgbArray[y + 1][x][0] = 0;
-        rgbArray[y + 2][x][0] = 0;
-        rgbArray[y][x][2] = 0;
-        rgbArray[y][x + 1][2] = 0;
-        rgbArray[y][x + 2][2] = 0;
-        rgbArray[y][x - 1][2] = 0;
-        rgbArray[y][x - 2][2] = 0;
-        rgbArray[y - 1][x][2] = 0;
-        rgbArray[y - 2][x][2] = 0;
-        rgbArray[y + 1][x][2] = 0;
-        rgbArray[y + 2][x][2] = 0;
+        for(int i=-2; i < 3 ; i++){
+            rgbArray[y][x + i][0] = 0;
+            rgbArray[y][x + i][1] = 255;
+            rgbArray[y][x + i][2] = 0;
 
+            rgbArray[y + i][x][0] = 0;
+            rgbArray[y + i][x][1] = 255;
+            rgbArray[y + i][x][2] = 0;
+        }
     }
 
 }

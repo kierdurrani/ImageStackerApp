@@ -7,17 +7,17 @@ public abstract class ImageWriter {
 
     public void writeToDisk(String path) {
         System.out.println();
-        ImageStackerApp.MainLogger.info("Writing Picture to Disk with Path: " + path);
+        ImageStackerMain.MainLogger.info("Writing Picture to Disk with Path: " + path);
         try {
             BufferedImage image = this.makeBufferedImage();
             File imageFile = new File(path);
             javax.imageio.ImageIO.write(image, "png", imageFile);
         } catch (IOException e) {
-            ImageStackerApp.MainLogger.error("Error: " + e);
-            ImageStackerApp.MainLogger.error("IO OUT ERROR WHILE WRITING TO DISK");
+            ImageStackerMain.MainLogger.error("Error: " + e);
+            ImageStackerMain.MainLogger.error("IO OUT ERROR WHILE WRITING TO DISK");
             return;
         }
-        ImageStackerApp.MainLogger.info("Write to disk successful.");
+        ImageStackerMain.MainLogger.info("Write to disk successful.");
     }
 
     public abstract BufferedImage makeBufferedImage();
