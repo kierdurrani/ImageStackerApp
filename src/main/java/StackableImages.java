@@ -1,5 +1,3 @@
-import com.sun.scenario.effect.Offset;
-
 import java.io.*;
 import java.text.ParseException;
 

@@ -44,6 +44,7 @@ public class ImageStackerMain {
 
         try{
             RGBImage finalStack = StackerFactory.stackImage(stackableImages);
+            System.out.println(outpDir + instanceName + "orionMega.jpg");
             finalStack.writeToDisk(outpDir + instanceName + "orionMega.jpg");
 
         } catch (IOException e) {

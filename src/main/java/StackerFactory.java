@@ -1,6 +1,3 @@
-import com.sun.scenario.effect.Offset;
-import jdk.nashorn.internal.ir.CatchNode;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
