@@ -2,8 +2,6 @@ package GUI;
 
 import javax.swing.*;
 import java.awt.*;
-
-import GUI.*;
 import stacker.StackableImages;
 
 // Swing DOCS - https://docs.oracle.com/javase/tutorial/uiswing/components/list.html
