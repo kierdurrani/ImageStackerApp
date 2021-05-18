@@ -14,7 +14,7 @@ public class RadioButtonPanel extends JPanel {
 
         // Create and add Radio Fields
         final JRadioButton option1 = new JRadioButton("Hybrid: Star align & correlation", true);
-        final JRadioButton option2 = new JRadioButton("Full cross-correlation", true);
+        final JRadioButton option2 = new JRadioButton("Manual Parameter Input", true);
 
         add(option1);
         add(option2);
