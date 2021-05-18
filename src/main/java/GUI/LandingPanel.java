@@ -27,8 +27,9 @@ public class LandingPanel extends JPanel {
         scratchButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                GUILauncher.mainFrame.setSize(new Dimension(900, 600));
                 GUILauncher.landingPanel.setVisible(false);
-                GUILauncher.chooserPanel.setVisible(true);
+                GUILauncher.generalPanel.setVisible(true);
             }
         });
         // TODO: Implement functionality of other buttons.

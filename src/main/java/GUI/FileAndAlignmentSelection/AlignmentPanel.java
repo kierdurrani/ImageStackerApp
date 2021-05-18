@@ -1,5 +1,6 @@
-package GUI;
+package GUI.FileAndAlignmentSelection;
 
+import GUI.GeneralPanel;
 import stacker.*;
 
 import javax.swing.*;
@@ -12,15 +13,15 @@ import java.util.ArrayList;
 
 public class AlignmentPanel extends JPanel {
 
-    private FileAndAlignmentPanel parentPanel;
+    private FileAndAlignmentPanel parentFileAndAlignmentPanel;
 
     AlignmentPanel(FileAndAlignmentPanel parent) {
 
-        parentPanel = parent;
+        parentFileAndAlignmentPanel = parent;
         setBorder(BorderFactory.createTitledBorder("Alignment Options"));
         setLayout(new BorderLayout());
 
-        add(new RadioButtonPanel(), BorderLayout.CENTER);
+        add(new AlignmentMethodRadioButton(), BorderLayout.CENTER);
 
         // TODO: Allow user to modify Start Detection params
 
@@ -31,7 +32,7 @@ public class AlignmentPanel extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 // TODO: Only have button do anything if a pic is selected.
                 System.out.println("Making array rep");
-                RGBImage rgbImage = RGBImage.makeFromBufferedImage(parentPanel.parentGeneralPanel.previewPanel.getImage());
+                RGBImage rgbImage = RGBImage.makeFromBufferedImage(GeneralPanel.getPreviewImage());
 
                 System.out.println("Finding Stars");
                 ArrayList<StarCoordinates> starCords = OffsetParameters.getStarCords(rgbImage);
@@ -41,8 +42,7 @@ public class AlignmentPanel extends JPanel {
                     rgbImage.makeGreenCross(cord.getX(), cord.getY());
                 }
                 System.out.println("Converting back");
-                parentPanel.parentGeneralPanel.previewPanel.setImage(rgbImage.makeBufferedImage());
-
+                GeneralPanel.setPreviewImage(rgbImage.makeBufferedImage());
             }
         });
         this.add(testStarDetection, BorderLayout.EAST);
@@ -69,7 +69,7 @@ public class AlignmentPanel extends JPanel {
                 // TODO - multi thread to keep main panel responsive?
                 saveParamButton.setEnabled(false);
 
-                ListModel list = parentPanel.fileSelectionPanel.fileJList.getModel();
+                ListModel list = parentFileAndAlignmentPanel.fileSelectionPanel.fileJList.getModel();
                 String[] imagePaths = new String[list.getSize()];
 
                 for (int i = 0; i < list.getSize(); i++) {
@@ -83,7 +83,7 @@ public class AlignmentPanel extends JPanel {
                 System.out.println(stackableImages.toString());
 
                 //TODO: interactions with other buttons e.g. save button.
-                parentPanel.parentGeneralPanel.stackableImages = stackableImages;
+                parentFileAndAlignmentPanel.stackableImages = stackableImages;
                 saveParamButton.setVisible(true);
                 saveParamButton.setEnabled(true);
 
@@ -117,7 +117,7 @@ public class AlignmentPanel extends JPanel {
 
                 try {
                     System.out.println(file.getAbsolutePath());
-                    ImageStackerMain.writeStringArrayToFile(file.getAbsolutePath(), parentPanel.parentGeneralPanel.stackableImages.getStringRepresentation());
+                    ImageStackerMain.writeStringArrayToFile(file.getAbsolutePath(), parentFileAndAlignmentPanel.stackableImages.getStringRepresentation());
 
                 } catch (IOException ioException) {
                     System.out.println("REEE");

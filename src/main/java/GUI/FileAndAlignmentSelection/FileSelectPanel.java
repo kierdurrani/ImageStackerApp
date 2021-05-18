@@ -13,12 +13,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class FileSelectionPanel extends JPanel {
+public class FileSelectPanel extends JPanel {
 
     JList fileJList;
     FileAndAlignmentPanel parentFileAndAlignmentPanel;
 
-    FileSelectionPanel(FileAndAlignmentPanel parentPanel){
+    FileSelectPanel(FileAndAlignmentPanel parentPanel){
         this.parentFileAndAlignmentPanel = parentPanel;
 
         // Initialise listmodel = list representation of the data + dynamic methods

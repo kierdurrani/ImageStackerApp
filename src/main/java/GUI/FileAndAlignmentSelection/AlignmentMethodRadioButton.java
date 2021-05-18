@@ -1,13 +1,13 @@
-package GUI;
+package GUI.FileAndAlignmentSelection;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class RadioButtonPanel extends JPanel {
+public class AlignmentMethodRadioButton extends JPanel {
 
-    public RadioButtonPanel() {
+    public AlignmentMethodRadioButton() {
         super();
 
         setLayout(new GridLayout());

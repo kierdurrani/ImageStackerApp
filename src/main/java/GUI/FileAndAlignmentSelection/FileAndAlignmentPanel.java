@@ -1,26 +1,42 @@
-package GUI;
+package GUI.FileAndAlignmentSelection;
+
+import GUI.GeneralPanel;
+import stacker.StackableImages;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class FileAndAlignmentPanel extends JPanel {
 
-    GeneralPanel parentGeneralPanel;
-    FileSelectionPanel fileSelectionPanel;
+    StackableImages stackableImages; // This field needs populating before continuing.
+
+    FileSelectPanel fileSelectionPanel = new FileSelectPanel(this);
+    AlignmentPanel alignmentPanel = new AlignmentPanel(this);
+    NavigationPanel navigationPanel = new NavigationPanel(this);
 
     public FileAndAlignmentPanel(GeneralPanel parentGeneralPanel) {
 
-        this.parentGeneralPanel = parentGeneralPanel;
-        fileSelectionPanel = new FileSelectionPanel(this);
-
-
         // Create window frame, add scroll pain and button container.
 
-        this.setLayout(new BorderLayout());
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setMaximumSize(new Dimension(200, 900));
 
-        this.add(fileSelectionPanel, BorderLayout.CENTER);
-        this.add(new AlignmentPanel(this), BorderLayout.SOUTH);
+        // Add Components
+        this.add(fileSelectionPanel);
+        this.add(alignmentPanel);
 
+        // Add glue to force navigation panel to bottom!
+        Component glue = Box.createVerticalGlue();
+        glue.setMaximumSize(new Dimension(450, 200));
+        glue.setPreferredSize(new Dimension(450, 0));
+        this.add(glue);
+
+        this.add(navigationPanel);
+
+
+        fileSelectionPanel.setMaximumSize(new Dimension(450, 700));
+        fileSelectionPanel.setPreferredSize(new Dimension(450, 350));
+        alignmentPanel.setMaximumSize(new Dimension(450,200));
+        navigationPanel.setMaximumSize(new Dimension(450,30));
     }
 }
