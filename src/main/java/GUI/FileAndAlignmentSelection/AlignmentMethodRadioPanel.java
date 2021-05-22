@@ -5,9 +5,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AlignmentMethodRadioButton extends JPanel {
+public class AlignmentMethodRadioPanel extends JPanel {
 
-    public AlignmentMethodRadioButton() {
+    public AlignmentMethodRadioPanel() {
         super();
 
         setLayout(new GridLayout());
@@ -20,6 +20,7 @@ public class AlignmentMethodRadioButton extends JPanel {
         add(option2);
 
         // create a ActionListeners for button groups
+        // TODO - Implement different radio button options.
         option1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Option 1 selected");

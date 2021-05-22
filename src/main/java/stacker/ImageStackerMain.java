@@ -80,7 +80,6 @@ public class ImageStackerMain {
             }
         }
         return fileNames;
-
     }
 
     private static String[] copyFilesToWorkingDir(String[] inFiles) throws IOException {
@@ -92,7 +91,7 @@ public class ImageStackerMain {
         return workingFiles;
     }
 
-    private static void align(String iDir, String oDir) throws IOException{
+    private static void copyToWorkingAndAlign(String iDir, String oDir) throws IOException{
         // Copy images in folder to "Imports" folder
         String[] iFiles = listFiles(iDir);
         String[] wFiles = copyFilesToWorkingDir(iFiles);

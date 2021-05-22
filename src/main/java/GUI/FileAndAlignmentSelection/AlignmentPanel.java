@@ -1,99 +1,88 @@
 package GUI.FileAndAlignmentSelection;
 
 import GUI.GeneralPanel;
-import stacker.*;
+import GUI.StackerInterface;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class AlignmentPanel extends JPanel {
 
     private FileAndAlignmentPanel parentFileAndAlignmentPanel;
+    JButton saveParamButton;
 
     AlignmentPanel(FileAndAlignmentPanel parent) {
 
-        parentFileAndAlignmentPanel = parent;
+        this.parentFileAndAlignmentPanel = parent;
         setBorder(BorderFactory.createTitledBorder("Alignment Options"));
-        setLayout(new BorderLayout());
 
-        add(new AlignmentMethodRadioButton(), BorderLayout.CENTER);
+        // TODO: Allow user to modify star detection params
 
-        // TODO: Allow user to modify Start Detection params
+        // Panel: Radio buttons for alignment method.
+        AlignmentMethodRadioPanel radioButtonPanel = new AlignmentMethodRadioPanel();
 
-        // Star Detection Test button
+        // Panel: Config for this alignment method
+        JPanel alignOptionsPanel = new JPanel();
+        alignOptionsPanel.setLayout(new BoxLayout(alignOptionsPanel, BoxLayout.Y_AXIS));
+
         JButton testStarDetection = new JButton("Test Star Detection");
         testStarDetection.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // TODO: Only have button do anything if a pic is selected.
-                System.out.println("Making array rep");
-                RGBImage rgbImage = RGBImage.makeFromBufferedImage(GeneralPanel.getPreviewImage());
+                // TODO: Only enable button if a proper pic is selected.
 
-                System.out.println("Finding Stars");
-                ArrayList<StarCoordinates> starCords = OffsetParameters.getStarCords(rgbImage);
-
-                System.out.println("Marking Stars. There were: " + starCords.size());
-                for (StarCoordinates cord : starCords) {
-                    rgbImage.makeGreenCross(cord.getX(), cord.getY());
-                }
-                System.out.println("Converting back");
-                GeneralPanel.setPreviewImage(rgbImage.makeBufferedImage());
+                BufferedImage markedImage = StackerInterface.markStarsInImage(GeneralPanel.getPreviewImage());
+                GeneralPanel.setPreviewImage( markedImage );
             }
         });
-        this.add(testStarDetection, BorderLayout.EAST);
+        alignOptionsPanel.add(testStarDetection);
 
-
-        // Container Panel for additional options
-        JPanel containerPanel = new JPanel();
-        containerPanel.setLayout(new BoxLayout(containerPanel, BoxLayout.Y_AXIS));
-
-        JTextArea jTextArea = new JTextArea("we");
-        jTextArea.setEditable(false);
-        jTextArea.setText("Click To Align");
-        containerPanel.add(jTextArea);
-
-        JButton saveParamButton = new JButton("Save Parameters");
-        this.add(containerPanel, BorderLayout.SOUTH);
-        saveParamButton.setEnabled(false);
-
-        // Button for Calculating Alignment Params
         JButton calcAlignParamsButton = new JButton("Calculate Alignment Parameters!");
-        calcAlignParamsButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // TODO - multi thread to keep main panel responsive?
-                saveParamButton.setEnabled(false);
 
-                ListModel list = parentFileAndAlignmentPanel.fileSelectionPanel.fileJList.getModel();
-                String[] imagePaths = new String[list.getSize()];
+        calcAlignParamsButton.addActionListener(e -> {
 
-                for (int i = 0; i < list.getSize(); i++) {
-                    System.out.println(list.getElementAt(i));
-                    imagePaths[i] = (String) list.getElementAt(i);
-                }
-                System.out.println("Creating Alignment Params");
-                StackableImages stackableImages = new StackableImages(imagePaths);
+            System.out.println("Clicked Calculate Alignment button..");
+            parentFileAndAlignmentPanel.disableNavigationButtons();
+            calcAlignParamsButton.setEnabled(false);
 
-                System.out.println("Complete");
-                System.out.println(stackableImages.toString());
+            // Obtain file paths from list and stack!
+            ListModel list = parentFileAndAlignmentPanel.fileSelectionPanel.fileJList.getModel();
+            String[] imagePaths = new String[list.getSize()];
 
-                //TODO: interactions with other buttons e.g. save button.
-                parentFileAndAlignmentPanel.stackableImages = stackableImages;
-                saveParamButton.setVisible(true);
-                saveParamButton.setEnabled(true);
-
+            for (int i = 0; i < list.getSize(); i++) {
+                System.out.println(list.getElementAt(i));
+                imagePaths[i] = (String) list.getElementAt(i);
             }
+
+            Thread t1 = new Thread(new Runnable() {
+                public void run()
+                {
+                    StackerInterface.calculateStackableImages(imagePaths);
+                    parentFileAndAlignmentPanel.enableNavigationButtons();
+                    calcAlignParamsButton.setEnabled(true);
+                }
+            });
+            t1.start();
         });
 
+        alignOptionsPanel.add(calcAlignParamsButton);
 
-        // Add the buttons to the container panel
-        containerPanel.add(calcAlignParamsButton);
-        containerPanel.add(saveParamButton);
+        // Panel: Results & Save options
+        JPanel resultsPanel = new JPanel();
+
+        JTextArea jTextArea = new JTextArea("Text Display..");
+        jTextArea.setEditable(false);
+        jTextArea.setText("");
+        alignOptionsPanel.add(jTextArea);
+
+        saveParamButton = new JButton("Save Parameters");
+        saveParamButton.setEnabled(false);
+        alignOptionsPanel.add(saveParamButton);
         saveParamButton.setVisible(false);
         saveParamButton.addActionListener(new ActionListener() {
             @Override
@@ -102,6 +91,11 @@ public class AlignmentPanel extends JPanel {
                 // TODO: clean up and save the actual real data
                 JFileChooser jFileChooser = new JFileChooser();
                 jFileChooser.showSaveDialog(jFileChooser);
+
+                if(jFileChooser.getSelectedFile() == null){
+                    System.out.println("No File Selected");
+                    return;
+                }
 
                 File file = jFileChooser.getSelectedFile();
                 System.out.println(file);
@@ -117,7 +111,10 @@ public class AlignmentPanel extends JPanel {
 
                 try {
                     System.out.println(file.getAbsolutePath());
-                    ImageStackerMain.writeStringArrayToFile(file.getAbsolutePath(), parentFileAndAlignmentPanel.stackableImages.getStringRepresentation());
+                    // TODO - validation that this is not null
+                    // Ideally this button will always be disabled unless this is populated, but possibly extra valiation for safety?
+                    StackerInterface.writeStringArrayToFile(file.getAbsolutePath(), StackerInterface.getStackableImages().getStringRepresentation());
+                            //stackableImages.getStringRepresentation());
 
                 } catch (IOException ioException) {
                     System.out.println("REEE");
@@ -125,8 +122,16 @@ public class AlignmentPanel extends JPanel {
             }
         });
 
-    }
 
+        // Add the button and containers to this panel.
+
+        // this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setLayout(new BorderLayout());
+        this.add(radioButtonPanel, BorderLayout.NORTH); //, BorderLayout.NORTH);
+        this.add(alignOptionsPanel, BorderLayout.CENTER); //, BorderLayout.EAST);
+        this.add(resultsPanel, BorderLayout.SOUTH); //, BorderLayout.SOUTH);
+
+    }
 
 }
 

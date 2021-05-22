@@ -41,8 +41,6 @@ public class PreviewPanel extends JPanel {
 
         transform = AffineTransform.getScaleInstance(1 / xRatio, 1 / yRatio);
 
-        System.out.println("This has run");
-
         ((Graphics2D) g).drawImage(image, transform, null);
         g.setColor(Color.BLUE);
 

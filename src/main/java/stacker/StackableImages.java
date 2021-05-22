@@ -2,6 +2,7 @@ package stacker;
 
 import java.io.*;
 import java.text.ParseException;
+import java.util.Stack;
 
 public class StackableImages {
 
@@ -89,8 +90,11 @@ public class StackableImages {
 
 
     public void populateOffsetParameters2() {
-        ImageStackerMain.MainLogger.info("Calculating Offset Params");
+
+        // Stack all images relative to the first one
+        ImageStackerMain.MainLogger.info("Calculating Offset Params - implicit method");
         this.offsetParameterTable = new OffsetParameters[imagePaths.length][imagePaths.length];
+
         try {
             RGBImage jImage = new RGBImage(imagePaths[0]);
             for (int i = 0; i < offsetParameterTable[0].length; i++) {

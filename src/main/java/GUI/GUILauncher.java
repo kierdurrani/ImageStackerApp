@@ -14,12 +14,13 @@ import stacker.StackableImages;
 public class GUILauncher {
 
     static JFrame mainFrame;
-    static LandingPanel landingPanel = new LandingPanel();
-    static GeneralPanel generalPanel = GeneralPanel.getGeneralPanel();
+    public static LandingPanel landingPanel = new LandingPanel();
+    public static GeneralPanel generalPanel = GeneralPanel.getGeneralPanel();
 
     public static void main(String args[]) throws InterruptedException {
 
         try {
+            // TODO - fix
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
         } catch (Exception e) { System.out.println("FAILURE: look and feel"); }
 
@@ -52,12 +53,8 @@ public class GUILauncher {
         mainFrame.repaint();
         // TODO
 
-        mainFrame.setSize(new Dimension(500,600));
+        mainFrame.setSize(new Dimension(500,625));
         mainFrame.setVisible(true);
-
-
-
-
 
     }
 }

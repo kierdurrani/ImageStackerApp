@@ -8,16 +8,20 @@ import java.awt.*;
 
 public class FileAndAlignmentPanel extends JPanel {
 
-    StackableImages stackableImages; // This field needs populating before continuing.
+    // StackableImages stackableImages; // This field needs populating before continuing.
 
-    FileSelectPanel fileSelectionPanel = new FileSelectPanel(this);
-    AlignmentPanel alignmentPanel = new AlignmentPanel(this);
-    NavigationPanel navigationPanel = new NavigationPanel(this);
+    FileSelectPanel fileSelectionPanel;
+    AlignmentPanel alignmentPanel;
+    NavigationPanel navigationPanel;
 
     public FileAndAlignmentPanel(GeneralPanel parentGeneralPanel) {
 
-        // Create window frame, add scroll pain and button container.
+        fileSelectionPanel = new FileSelectPanel(this);
+        alignmentPanel = new AlignmentPanel(this);
+        navigationPanel = new NavigationPanel(this);
 
+
+        // Create window frame, add scroll pain and button container.
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setMaximumSize(new Dimension(200, 900));
 
@@ -30,7 +34,6 @@ public class FileAndAlignmentPanel extends JPanel {
         glue.setMaximumSize(new Dimension(450, 200));
         glue.setPreferredSize(new Dimension(450, 0));
         this.add(glue);
-
         this.add(navigationPanel);
 
 
@@ -38,5 +41,25 @@ public class FileAndAlignmentPanel extends JPanel {
         fileSelectionPanel.setPreferredSize(new Dimension(450, 350));
         alignmentPanel.setMaximumSize(new Dimension(450,200));
         navigationPanel.setMaximumSize(new Dimension(450,30));
+    }
+
+    public void disableNavigationButtons(){
+
+        navigationPanel.nextButton.setEnabled(false);
+        navigationPanel.backButton.setEnabled(false);
+        fileSelectionPanel.fileJList.setEnabled(false);
+
+        this.repaint();
+
+    }
+
+    public void enableNavigationButtons() {
+
+        navigationPanel.nextButton.setEnabled(true);
+        navigationPanel.backButton.setEnabled(true);
+        fileSelectionPanel.fileJList.setEnabled(true);
+
+        this.repaint();
+
     }
 }

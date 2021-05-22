@@ -24,6 +24,6 @@ public abstract class ImageWriter {
 
     public abstract BufferedImage makeBufferedImage();
 
-    public abstract ImageWriter makeFromBufferedImage(BufferedImage image);
+   // public abstract ImageWriter makeFromBufferedImage(BufferedImage image);
 
 }

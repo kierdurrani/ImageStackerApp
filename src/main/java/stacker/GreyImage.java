@@ -8,14 +8,26 @@ public class GreyImage extends ImageWriter {
 
     private int[][] greyArray;
 
+    // Constructors
     public GreyImage(String path) throws IOException {
         BufferedImage img = javax.imageio.ImageIO.read(new File(path));
         this.greyArray = makeFromBufferedImage(img).getGreyArray();
     }
 
-    // Constructor
     public GreyImage(int[][] greyArray) {
         this.greyArray = greyArray;
+    }
+
+    //@Override
+    public static GreyImage makeFromBufferedImage(BufferedImage image) {
+        int[][] greyArray = new int[image.getHeight()][image.getWidth()];
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                int RGB = image.getRGB(x, y);
+                greyArray[y][x] = (((RGB & 16711680) >> 16) + ((RGB & 65280) >> 8) + (RGB & 255))/3;
+            }
+        }
+        return(new GreyImage(greyArray));
     }
 
     // Getter
@@ -23,7 +35,7 @@ public class GreyImage extends ImageWriter {
         return greyArray;
     }
 
-    // Implemented Methods
+    // Implement abstract Methods
     @Override
     public BufferedImage makeBufferedImage() {
         BufferedImage image = new BufferedImage(greyArray[0].length, greyArray.length, BufferedImage.TYPE_INT_RGB);
@@ -34,18 +46,6 @@ public class GreyImage extends ImageWriter {
             }
         }
         return image;
-    }
-
-    @Override
-    public GreyImage makeFromBufferedImage(BufferedImage image) {
-        int[][] greyArray = new int[image.getHeight()][image.getWidth()];
-        for (int y = 0; y < image.getHeight(); y++) {
-            for (int x = 0; x < image.getWidth(); x++) {
-                int RGB = image.getRGB(x, y);
-                greyArray[y][x] = (((RGB & 16711680) >> 16) + ((RGB & 65280) >> 8) + (RGB & 255))/3;
-            }
-        }
-        return(new GreyImage(greyArray));
     }
 
     // Mathematical Filters for the ImageWriter:

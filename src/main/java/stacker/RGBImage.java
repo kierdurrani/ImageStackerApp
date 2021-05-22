@@ -63,8 +63,8 @@ public class RGBImage extends ImageWriter {
     }
 
 
-    @Override
-    public RGBImage makeFromBufferedImage(BufferedImage image) {
+   // @Override
+    public static RGBImage makeFromBufferedImage(BufferedImage image) {
 
         int[][][] rgbArray = new int[image.getHeight()][image.getWidth()][3];
 
@@ -81,14 +81,17 @@ public class RGBImage extends ImageWriter {
     }
 
     public void makeGreenCross(int x, int y){
-        for(int i=-2; i < 3 ; i++){
+        for(int i=-7; i <= 7 ; i++){
             rgbArray[y][x + i][0] = 0;
             rgbArray[y][x + i][1] = 255;
             rgbArray[y][x + i][2] = 0;
+            rgbArray[y+1][x + i][0] = 0;
+            rgbArray[y+1][x + i][1] = 255;
+            rgbArray[y+1][x + i][2] = 0;
 
-            rgbArray[y + i][x][0] = 0;
-            rgbArray[y + i][x][1] = 255;
-            rgbArray[y + i][x][2] = 0;
+            rgbArray[y + i][x+1][0] = 0;
+            rgbArray[y + i][x+1][1] = 255;
+            rgbArray[y + i][x+1][2] = 0;
         }
     }
 

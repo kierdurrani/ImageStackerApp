@@ -11,9 +11,24 @@ public final class GeneralPanel extends JPanel {
     // Singleton Class - Panel to hold any choice of optionsPanel + a preview of the image being worked on.
     private final static GeneralPanel generalPanel = new GeneralPanel();
 
-    JPanel optionsPanel;
-    PreviewPanel previewPanel;
+    private JPanel optionsPanel;
+    private PreviewPanel previewPanel;
 
+    // constructor for singleton
+    private GeneralPanel(){
+
+        optionsPanel = new FileAndAlignmentPanel(this);
+        previewPanel = new PreviewPanel();
+
+        this.setLayout(new BorderLayout());
+        this.add(optionsPanel, BorderLayout.WEST);
+        this.add(previewPanel, BorderLayout.CENTER);
+
+        optionsPanel.setPreferredSize(new Dimension(400,1080));
+
+    }
+
+    // Getters
     public static GeneralPanel getGeneralPanel(){
         return generalPanel;
     }
@@ -26,19 +41,18 @@ public final class GeneralPanel extends JPanel {
         getGeneralPanel().previewPanel.setImage(image);
     }
 
-    private GeneralPanel(){
-
-        optionsPanel = new FileAndAlignmentPanel(this);
-        previewPanel = new PreviewPanel();
-
-        this.setLayout(new BorderLayout());
-        this.add(optionsPanel, BorderLayout.WEST);
-        this.add(previewPanel, BorderLayout.CENTER);
-
-        optionsPanel.setPreferredSize(new Dimension(400,1080));
-
-
+    public static void setOptionsPanel(JPanel newOptionsPanel){
+        try {
+            getGeneralPanel().remove(getGeneralPanel().optionsPanel);
+        }catch (NullPointerException e){
+            System.out.println("The options panel was null. This is unexpected, but non fatal.");
+        }
+        getGeneralPanel().optionsPanel = newOptionsPanel;
+        getGeneralPanel().add(newOptionsPanel, BorderLayout.WEST);
+        getGeneralPanel().repaint();
     }
+
+
 
 
 }

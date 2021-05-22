@@ -8,27 +8,6 @@ import java.util.Arrays;
 
 public class StackerFactory {
 
-    private static int brightness(int totalPower, int imgsUsed) {
-
-        float fPower = (float) totalPower / imgsUsed;
-        int y = (int) (255.0*(Math.tanh( fPower / 50.0) + fPower/1000.0)/1.26);
-
-        return y;
-    }
-
-
-    private static int calculateFinalBrightness(int[] inputBrightness) {
-
-        Arrays.sort(inputBrightness);
-        int outputBrightness = 0;
-        for (int x = 0; x < inputBrightness.length - 10; x++) {
-            outputBrightness += inputBrightness[x];
-        }
-        int imgsUsed = (inputBrightness.length - 10);
-        outputBrightness = brightness(outputBrightness, imgsUsed);
-        return outputBrightness;
-    }
-
     public static RGBImage stackImage(StackableImages stackableImages) throws IOException {
         long time = System.currentTimeMillis();
         ImageStackerMain.MainLogger.info("Starting the Stacking Process.");
@@ -121,5 +100,27 @@ public class StackerFactory {
 
         return new RGBImage(finalValues);
     }
+
+    // Helper Functions
+    private static int normaliseBrightness(int totalPower, int imgsUsed) {
+
+        float fPower = (float) totalPower / imgsUsed;
+        int y = (int) (255.0*(Math.tanh( fPower / 50.0) + fPower/1000.0)/1.26);
+
+        return y;
+    }
+
+    private static int calculateFinalBrightness(int[] inputBrightness) {
+
+        Arrays.sort(inputBrightness);
+        int outputBrightness = 0;
+        for (int x = 0; x < inputBrightness.length - 10; x++) {
+            outputBrightness += inputBrightness[x];
+        }
+        int imgsUsed = (inputBrightness.length - 10);
+        outputBrightness = normaliseBrightness(outputBrightness, imgsUsed);
+        return outputBrightness;
+    }
+
 
 }

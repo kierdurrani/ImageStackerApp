@@ -41,6 +41,7 @@ public class OffsetParameters {
     }
 
     public static boolean triangleEquality(OffsetParameters first, OffsetParameters second, OffsetParameters third) {
+        // Verifies the sum of the first two offsets is equal (very close) to the third value
         int xDifference = first.x + second.x - third.x;
         int yDifference = first.y + second.y - third.y;
         int thetaDifference = first.theta + second.theta - third.theta;
@@ -50,8 +51,8 @@ public class OffsetParameters {
     // ++++++++++++++++++++++++++++++++ CREATE OFFSET PARAM FROM IMAGE BY MAXIMISING NUMBER OF ALIGNED STARS ++++++++++++++++++++++++++++++++
     public OffsetParameters(RGBImage rgbImg1, RGBImage rgbImg2, int method) {
 
-        ArrayList<StarCoordinates> starCoordinates1 = getStarCords(rgbImg1);
-        ArrayList<StarCoordinates> starCoordinates2 = getStarCords(rgbImg2);
+        ArrayList<StarCoordinates> starCoordinates1 = OffsetParameters.getStarCords(rgbImg1);
+        ArrayList<StarCoordinates> starCoordinates2 = OffsetParameters.getStarCords(rgbImg2);
         starCoordinates1.sort(StarCoordinates::compareTo);
         int mostAlignedStars = 0;
 
@@ -100,23 +101,30 @@ public class OffsetParameters {
         ImageStackerMain.MainLogger.debug("Allignment Parameters found were (x,y,theta)= (" + x + "," + y + "," + theta);
     }
 
-    public ArrayList<StarCoordinates> getStarCords(RGBImage rgbImage) {
-
-        GreyImage greyImage = rgbImage.makeGreyImage().gaussian().bin().gaussian().laplacianMag();
-        // For Testing: greyImage.writeToDisk("C:\\Users\\Fairooz\\Desktop\\Stack Testing\\QUICK TEST\\" + ImageStackerMain.write++ + ".png");
+    public static ArrayList<StarCoordinates> getStarCords(RGBImage rgbImage) {
+        // TODO - optimisation?  Impletement this as a filter?
+        // Make a filter analogous to the laplassian of the form  [-1, 0 ,-1] , [0, 1 ,0].  [-1, 0 ,-1]
+        ImageStackerMain.MainLogger.info("Finding Stars in Image");
 
         ArrayList<StarCoordinates> starCandidates = new ArrayList<StarCoordinates>();
+        int[][] greyArray = rgbImage.makeGreyImage().getGreyArray();
 
-        ImageStackerMain.MainLogger.info("Finding Stars in Image");
-        int[][] greyArray = greyImage.getGreyArray();
-        for (int y = 10; y < greyArray.length - 10; y++) {
-            for (int x = 10; x < greyArray[0].length - 10; x++) {
+        for (int y = 10; y < greyArray.length - 10; y+=3) {
+            for (int x = 10; x < greyArray[0].length - 10; x+=3) {
+                // This could be done quickly in python using numpy to multiply a filter array by the other
+
                 if (greyArray[y][x] > 50) {
-                    if ((greyArray[y][x - 1] > 100 | greyArray[y - 1][x] > 100) & (greyArray[y + 1][x] > 100 | greyArray[y][x + 1] > 100)) {
-                        if ((greyArray[y][x - 6] < 80 | greyArray[y][x + 6] < 80) & (greyArray[y + 6][x] < 80 | greyArray[y - 6][x] < 80)) {
-//                          rgbImage.makeGreenCross(x, y);
-                            starCandidates.add(new StarCoordinates(x, y));
-                        }
+                    // TODO; this doens't work well for the case of a single outlier pixel in the 'dark' region happens to be super light
+                    int bright = greyArray[y + 1][x] + greyArray[y-1][x] + greyArray[y][x+ 1] + greyArray[y][x-1];
+                    bright += (greyArray[y + 2][x + 2] + greyArray[y+ 2][x -2 ] + greyArray[y-2][x +2] + greyArray[y-2][x+2]);
+
+                    int dark   = greyArray[y][x - 10] + greyArray[y][x + 10] + greyArray[y + 10][x] + greyArray[y - 10][x];
+                    dark   += greyArray[y + 7][x + 7] + greyArray[y + 7][x - 7] + greyArray[y - 7][x + 7] + greyArray[y - 7][x - 7];
+
+                    // float darkRatio = ((float) bright + dark )/ (bright); threshold 1.3
+                    int darkRatio = bright - dark;
+                    if( darkRatio >  40 * 8){
+                        starCandidates.add(new StarCoordinates(x, y));
                     }
                 }
             }
@@ -124,7 +132,7 @@ public class OffsetParameters {
 
         ImageStackerMain.MainLogger.info(starCandidates.size() + " Stars were identified pre-culling");
 
-        // CULLING THE STARS:
+        // CULLING THE STARS (prevent multiple counts of the same star):
         ArrayList<ArrayList<StarCoordinates>> actualStars = new ArrayList<>();
         while (!starCandidates.isEmpty()) {
 
@@ -159,16 +167,13 @@ public class OffsetParameters {
                 y += coords.getY();
             }
             starCandidates.add(new StarCoordinates(x / length, y / length));
-            //    rgbImage.makeGreenCross(x / length, y / length);
         }
         ImageStackerMain.MainLogger.debug("STARS DETECTED: " + actualStars.size());
-        // ImageStackerApp.MainLogger.info("Writing Remaining Stars to Disk");
-        // THIS PRINTS WITH CROSSES
-        // rgbImage.writeToDisk("C:\\Users\\Fairooz\\Desktop\\Stack Testing\\QUICK TEST\\" + ImageStackerApp.write++ + ".png");
+
         return starCandidates;
     }
 
-    private boolean starBelongsToClass(StarCoordinates star, List<StarCoordinates> starCoordinatesList) {
+    private static boolean starBelongsToClass(StarCoordinates star, List<StarCoordinates> starCoordinatesList) {
         for (StarCoordinates refStarCoords : starCoordinatesList) {
             if (StarCoordinates.distance(refStarCoords, star) < 6) {
                 return true;
@@ -212,7 +217,6 @@ public class OffsetParameters {
     }
 
     // ------------------------- CROSS-CORRELATION METHOD -------------------------
-    @Deprecated
     public OffsetParameters(RGBImage rgbImg1, RGBImage rgbImg2) {
         ImageStackerMain.MainLogger.info("Starting Alignment of pair.");
 

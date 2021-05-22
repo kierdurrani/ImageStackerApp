@@ -11,18 +11,33 @@ public class LandingPanel extends JPanel {
 
         ImageIcon logoIcon = new ImageIcon("C:\\Users\\Kier\\Developing\\ImageStackerGUI\\src\\main\\java\\resources\\img.png");
 
-        this.setLayout(new BorderLayout());
-        this.add( new JLabel( logoIcon, JLabel.CENTER) );
+        // this.setLayout(new BorderLayout());
+
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+
+
 
         //region create buttonPanel
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new GridLayout(3,1));
+        //JPanel buttonPanel = new JPanel();
+        //buttonPanel.setLayout(new GridLayout(3,1));
 
-        buttonPanel.setToolTipText("");
-
+        //buttonPanel.setToolTipText("");
+        JLabel menuImage = new JLabel( logoIcon, JLabel.CENTER);
         JButton scratchButton = new JButton("Select images and align");
         JButton importButton = new JButton("Import existing alignment settings");
         JButton editButton = new JButton("Edit saved photo");
+
+        menuImage.setPreferredSize(new Dimension(500, 500));
+        scratchButton.setPreferredSize(new Dimension(500,25));
+        importButton.setPreferredSize(new Dimension(500,25));
+        editButton.setPreferredSize(new Dimension(500,25));
+
+        menuImage.setMaximumSize(new Dimension(1920, 1080));
+        scratchButton.setMaximumSize(new Dimension(1920,25));
+        importButton.setMaximumSize(new Dimension(1920,25));
+        editButton.setMaximumSize(new Dimension(1920,25));
+
 
         scratchButton.addActionListener(new ActionListener() {
             @Override
@@ -34,13 +49,14 @@ public class LandingPanel extends JPanel {
         });
         // TODO: Implement functionality of other buttons.
 
-        buttonPanel.add(scratchButton);
-        buttonPanel.add(importButton);
-        buttonPanel.add(editButton);
+        this.add( menuImage );
+        this.add(scratchButton);
+        this.add(importButton);
+        this.add(editButton);
         //endregion create buttonPanel
 
         // TODO: fix layout to make more aesthetic when expanded.
-        this.add( buttonPanel, BorderLayout.SOUTH);
+       // this.add( buttonPanel, BorderLayout.SOUTH);
 
     }
 
