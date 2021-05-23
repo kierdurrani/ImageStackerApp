@@ -13,7 +13,7 @@ import stacker.StackableImages;
 
 public class GUILauncher {
 
-    static JFrame mainFrame;
+    public static JFrame mainFrame;
     public static LandingPanel landingPanel = new LandingPanel();
     public static GeneralPanel generalPanel = GeneralPanel.getGeneralPanel();
 
@@ -53,7 +53,7 @@ public class GUILauncher {
         mainFrame.repaint();
         // TODO
 
-        mainFrame.setSize(new Dimension(500,625));
+        mainFrame.setSize(new Dimension(500,615));
         mainFrame.setVisible(true);
 
     }

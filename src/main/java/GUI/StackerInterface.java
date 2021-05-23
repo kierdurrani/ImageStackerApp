@@ -43,6 +43,11 @@ public final class StackerInterface {
 
     }
 
+    public static void importStackableImage(String filePath ) throws ImportException{
+
+        stackableImages = new StackableImages(filePath);
+
+    }
 
 
 

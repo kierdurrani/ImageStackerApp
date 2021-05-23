@@ -1,9 +1,12 @@
 package GUI;
 
+import stacker.ImportException;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 public class LandingPanel extends JPanel {
 
@@ -16,8 +19,6 @@ public class LandingPanel extends JPanel {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 
-
-
         //region create buttonPanel
         //JPanel buttonPanel = new JPanel();
         //buttonPanel.setLayout(new GridLayout(3,1));
@@ -28,7 +29,7 @@ public class LandingPanel extends JPanel {
         JButton importButton = new JButton("Import existing alignment settings");
         JButton editButton = new JButton("Edit saved photo");
 
-        menuImage.setPreferredSize(new Dimension(500, 500));
+        // menuImage.setPreferredSize(new Dimension(500, 500));
         scratchButton.setPreferredSize(new Dimension(500,25));
         importButton.setPreferredSize(new Dimension(500,25));
         editButton.setPreferredSize(new Dimension(500,25));
@@ -39,13 +40,31 @@ public class LandingPanel extends JPanel {
         editButton.setMaximumSize(new Dimension(1920,25));
 
 
-        scratchButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                GUILauncher.mainFrame.setSize(new Dimension(900, 600));
-                GUILauncher.landingPanel.setVisible(false);
-                GUILauncher.generalPanel.setVisible(true);
+        scratchButton.addActionListener(e -> {
+            GUILauncher.mainFrame.setSize(new Dimension(900, 600));
+            GUILauncher.landingPanel.setVisible(false);
+            GUILauncher.generalPanel.setVisible(true);
+        });
+        importButton.addActionListener( e -> {
+
+            JFileChooser chooser = new JFileChooser();
+            chooser.showOpenDialog(null);
+            File f = chooser.getSelectedFile();
+            System.out.println(f.getAbsolutePath());
+
+            try {
+                StackerInterface.importStackableImage(f.getAbsolutePath());
+            }catch ( ImportException exception ){
+                System.out.println(exception.getMessage());
+
+                JOptionPane optionPane = new JOptionPane(exception.getMessage(), JOptionPane.ERROR_MESSAGE);
+                JDialog dialog = optionPane.createDialog("Failed to Import");
+                dialog.setAlwaysOnTop(true);
+                dialog.setVisible(true);
+
             }
+
+
         });
         // TODO: Implement functionality of other buttons.
 
