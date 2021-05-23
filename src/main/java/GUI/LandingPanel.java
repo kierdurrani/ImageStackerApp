@@ -4,15 +4,13 @@ import stacker.ImportException;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 
 public class LandingPanel extends JPanel {
 
     public LandingPanel(){
 
-        ImageIcon logoIcon = new ImageIcon("C:\\Users\\Kier\\Developing\\ImageStackerGUI\\src\\main\\java\\resources\\img.png");
+        ImageIcon logoIcon = new ImageIcon(GUILauncher.resourcesRoot + "\\img.png");
 
         // this.setLayout(new BorderLayout());
 

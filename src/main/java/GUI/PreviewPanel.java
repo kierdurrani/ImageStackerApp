@@ -15,10 +15,10 @@ public class PreviewPanel extends JPanel {
 
     public PreviewPanel() {
         try {
-            image = ImageIO.read(new File("C:\\Users\\Kier\\Developing\\ImageStackerGUI\\src\\main\\java\\resources\\defaultImage.jpg"));
-            System.out.println("Loaded Image");
+            image = ImageIO.read(new File(GUILauncher.resourcesRoot + "defaultImage.jpg" ));
+            System.out.println("Loaded Image for default" );
         } catch (IOException ex) {
-            System.out.println("Failed to load image");
+            System.out.println("Failed to load image:" + (GUILauncher.resourcesRoot + "defaultImage.jpg" ));
         }
 
     }
