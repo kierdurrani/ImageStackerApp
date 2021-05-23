@@ -9,6 +9,7 @@ import java.awt.*;
 public class FileAndAlignmentPanel extends JPanel {
 
     // StackableImages stackableImages; // This field needs populating before continuing.
+    // TODO - if stackable images already exists in the parent, import this and set all enabled?
 
     FileSelectPanel fileSelectionPanel;
     AlignmentPanel alignmentPanel;
@@ -48,18 +49,32 @@ public class FileAndAlignmentPanel extends JPanel {
         navigationPanel.nextButton.setEnabled(false);
         navigationPanel.backButton.setEnabled(false);
         fileSelectionPanel.fileJList.setEnabled(false);
-
+        fileSelectionPanel.setEnabled(false);
+        fileSelectionPanel.ButtonAddImg.setEnabled(false);
+        fileSelectionPanel.ButtonRemoveImg.setEnabled(false);
+        alignmentPanel.saveParamButton.setEnabled(false);
+        
         this.repaint();
 
     }
 
-    public void enableNavigationButtons() {
+    public void setNavigationButtonsEnabled(boolean b){
 
-        navigationPanel.nextButton.setEnabled(true);
-        navigationPanel.backButton.setEnabled(true);
-        fileSelectionPanel.fileJList.setEnabled(true);
+        navigationPanel.nextButton.setEnabled(b);
+        navigationPanel.backButton.setEnabled(b);
+        fileSelectionPanel.fileJList.setEnabled(b);
+        fileSelectionPanel.setEnabled(b);
+        fileSelectionPanel.ButtonAddImg.setEnabled(b);
+        fileSelectionPanel.ButtonRemoveImg.setEnabled(b);
+        alignmentPanel.saveParamButton.setEnabled(b);
 
+        if(b){
+            alignmentPanel.saveParamButton.setVisible(true);
+        }
+        
         this.repaint();
 
     }
+
+
 }

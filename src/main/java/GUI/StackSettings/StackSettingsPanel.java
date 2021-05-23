@@ -1,6 +1,5 @@
-package GUI.StackSettingsSelection;
+package GUI.StackSettings;
 
-import GUI.GeneralPanel;
 import stacker.StackableImages;
 
 import javax.swing.*;

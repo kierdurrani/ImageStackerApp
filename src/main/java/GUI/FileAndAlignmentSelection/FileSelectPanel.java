@@ -17,6 +17,9 @@ public class FileSelectPanel extends JPanel {
 
     JList fileJList;
     FileAndAlignmentPanel parentFileAndAlignmentPanel;
+    JPanel buttonContainer = new JPanel();
+    JButton ButtonRemoveImg = new JButton("Remove Image(s)");
+    JButton ButtonAddImg = new JButton("Add Image(s)");
 
     FileSelectPanel(FileAndAlignmentPanel parentPanel){
         this.parentFileAndAlignmentPanel = parentPanel;
@@ -35,8 +38,7 @@ public class FileSelectPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(fileJList);
 
         // Create Add/Remove image Buttons
-        JButton ButtonRemoveImg = new JButton("Remove Image(s)");
-        JButton ButtonAddImg = new JButton("Add Image(s)");
+
 
         ButtonAddImg.setEnabled(true);
         ButtonAddImg.setSize(new Dimension(200, 25));
@@ -76,10 +78,9 @@ public class FileSelectPanel extends JPanel {
         });
 
         // Create Button Container - to keep layout tidy.
-        JPanel ButtonContainer = new JPanel();
-        ButtonContainer.setLayout(new BorderLayout());
-        ButtonContainer.add(ButtonAddImg, BorderLayout.NORTH);
-        ButtonContainer.add(ButtonRemoveImg, BorderLayout.SOUTH);
+        buttonContainer.setLayout(new BorderLayout());
+        buttonContainer.add(ButtonAddImg, BorderLayout.NORTH);
+        buttonContainer.add(ButtonRemoveImg, BorderLayout.SOUTH);
 
         // JList functionality
         fileJList.addListSelectionListener(new ListSelectionListener() {
@@ -105,7 +106,7 @@ public class FileSelectPanel extends JPanel {
         // Button Container Panel - for layout
         this.setLayout(new BorderLayout());
         this.add(scrollPane, BorderLayout.CENTER);
-        this.add(ButtonContainer, BorderLayout.SOUTH);
+        this.add(buttonContainer, BorderLayout.SOUTH);
         this.setBorder(BorderFactory.createTitledBorder("Select Image Files"));
 
     }
