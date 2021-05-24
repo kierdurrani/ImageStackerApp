@@ -11,7 +11,7 @@ public final class GeneralPanel extends JPanel {
     // Singleton Class - Panel to hold any choice of optionsPanel + a preview of the image being worked on.
     private final static GeneralPanel generalPanel = new GeneralPanel();
 
-    private JPanel optionsPanel;
+    public JPanel optionsPanel; // todo - make private
     private PreviewPanel previewPanel;
 
     // constructor for singleton
@@ -42,14 +42,23 @@ public final class GeneralPanel extends JPanel {
     }
 
     public static void setOptionsPanel(JPanel newOptionsPanel){
+
         try {
+
             getGeneralPanel().remove(getGeneralPanel().optionsPanel);
+            getGeneralPanel().optionsPanel.repaint();
         }catch (NullPointerException e){
             System.out.println("The options panel was null. This is unexpected, but non fatal.");
         }
+        getGeneralPanel().repaint();
         getGeneralPanel().optionsPanel = newOptionsPanel;
         getGeneralPanel().add(newOptionsPanel, BorderLayout.WEST);
+        // FIXME when being called from the Navigation Panel
+
+        newOptionsPanel.repaint();
         getGeneralPanel().repaint();
+
+
     }
 
 
