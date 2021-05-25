@@ -11,12 +11,11 @@ public class RGBImage extends ImageWriter {
 
     private int[][][] rgbArray;
 
-    // Constructor
+    // Constructors
     public RGBImage(int[][][] rgbArray) {
         this.rgbArray = rgbArray;
     }
 
-    // IO READ CONSTRUCTOR
     public RGBImage(String path) throws IOException {
         File file = new File(path);
         BufferedImage img;
@@ -29,6 +28,34 @@ public class RGBImage extends ImageWriter {
             img = null;
             file = null;
         }
+    }
+
+    @Override
+    public BufferedImage makeBufferedImage() {
+        BufferedImage image = new BufferedImage(rgbArray[0].length, rgbArray.length, BufferedImage.TYPE_INT_RGB);
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                int color = (rgbArray[y][x][0] << 16) + (rgbArray[y][x][1] << 8) + rgbArray[y][x][2];
+                image.setRGB(x, y, color);
+            }
+        }
+        return image;
+    }
+
+    public static RGBImage makeFromBufferedImage(BufferedImage image) {
+
+        int[][][] rgbArray = new int[image.getHeight()][image.getWidth()][3];
+
+        int RGB;
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                RGB = image.getRGB(x, y);
+                rgbArray[y][x][0] = (RGB & 16711680) >> 16;
+                rgbArray[y][x][1] = (RGB & 65280) >> 8;
+                rgbArray[y][x][2] = (RGB & 255);
+            }
+        }
+        return (new RGBImage(rgbArray));
     }
 
     public GreyImage makeGreyImage() {
@@ -47,37 +74,6 @@ public class RGBImage extends ImageWriter {
     @JsonIgnore
     public int[][][] getRgbArray() {
         return rgbArray;
-    }
-
-    // Implemented Methods
-    @Override
-    public BufferedImage makeBufferedImage() {
-        BufferedImage image = new BufferedImage(rgbArray[0].length, rgbArray.length, BufferedImage.TYPE_INT_RGB);
-        for (int y = 0; y < image.getHeight(); y++) {
-            for (int x = 0; x < image.getWidth(); x++) {
-                int color = (rgbArray[y][x][0] << 16) + (rgbArray[y][x][1] << 8) + rgbArray[y][x][2];
-                image.setRGB(x, y, color);
-            }
-        }
-        return image;
-    }
-
-
-   // @Override
-    public static RGBImage makeFromBufferedImage(BufferedImage image) {
-
-        int[][][] rgbArray = new int[image.getHeight()][image.getWidth()][3];
-
-        int RGB;
-        for (int y = 0; y < image.getHeight(); y++) {
-            for (int x = 0; x < image.getWidth(); x++) {
-                RGB = image.getRGB(x, y);
-                rgbArray[y][x][0] = (RGB & 16711680) >> 16;
-                rgbArray[y][x][1] = (RGB & 65280) >> 8;
-                rgbArray[y][x][2] = (RGB & 255);
-            }
-        }
-        return (new RGBImage(rgbArray));
     }
 
     public void makeGreenCross(int x, int y){

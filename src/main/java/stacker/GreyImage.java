@@ -9,16 +9,27 @@ public class GreyImage extends ImageWriter {
     private int[][] greyArray;
 
     // Constructors
+    public GreyImage(int[][] greyArray) {
+        this.greyArray = greyArray;
+    }
+
     public GreyImage(String path) throws IOException {
         BufferedImage img = javax.imageio.ImageIO.read(new File(path));
         this.greyArray = makeFromBufferedImage(img).getGreyArray();
     }
 
-    public GreyImage(int[][] greyArray) {
-        this.greyArray = greyArray;
+    @Override
+    public BufferedImage makeBufferedImage() {
+        BufferedImage image = new BufferedImage(greyArray[0].length, greyArray.length, BufferedImage.TYPE_INT_RGB);
+        for (int y = 0; y < image.getHeight(); y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                int color = (greyArray[y][x] << 16) + (greyArray[y][x] << 8) + greyArray[y][x];
+                image.setRGB(x, y, color);
+            }
+        }
+        return image;
     }
 
-    //@Override
     public static GreyImage makeFromBufferedImage(BufferedImage image) {
         int[][] greyArray = new int[image.getHeight()][image.getWidth()];
         for (int y = 0; y < image.getHeight(); y++) {
@@ -36,17 +47,6 @@ public class GreyImage extends ImageWriter {
     }
 
     // Implement abstract Methods
-    @Override
-    public BufferedImage makeBufferedImage() {
-        BufferedImage image = new BufferedImage(greyArray[0].length, greyArray.length, BufferedImage.TYPE_INT_RGB);
-        for (int y = 0; y < image.getHeight(); y++) {
-            for (int x = 0; x < image.getWidth(); x++) {
-                int color = (greyArray[y][x] << 16) + (greyArray[y][x] << 8) + greyArray[y][x];
-                image.setRGB(x, y, color);
-            }
-        }
-        return image;
-    }
 
     // Mathematical Filters for the ImageWriter:
     public GreyImage gaussian() {
@@ -69,7 +69,7 @@ public class GreyImage extends ImageWriter {
         return (new GreyImage(output));
     }
 
-    public GreyImage laplacianMag()     {
+    public GreyImage laplacianMag() {
         int[][] output = new int[greyArray.length][greyArray[0].length];
         for (int y = 2; y < greyArray.length - 2; y++) {
             for (int x = 2; x < greyArray[0].length - 2; x++) {
