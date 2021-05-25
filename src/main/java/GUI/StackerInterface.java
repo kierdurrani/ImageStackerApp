@@ -7,8 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public final class StackerInterface {
+
     // Class to manage dependencies with the stacker 'backend'
-    // Also contains some objects to centralise stacking params.
+    // Also contains some static fields to centralise stacking params.
 
     private static StackableImages stackableImages;
 
@@ -16,9 +17,21 @@ public final class StackerInterface {
         ImageStackerMain.writeStringArrayToFile(absolutePath, stringRepresentation);
     }
 
+    // Long calculation functions:
     public static void calculateStackableImages(String[] imagePaths){
         stackableImages = new StackableImages(imagePaths);
         System.out.println("THIS IS COMPLETE");
+    }
+
+    public static void stackImages(){
+
+    }
+
+    // Wrapper functions for methods in other package:
+    public static void importStackableImage(String filePath ) throws ImportException{
+
+        stackableImages = new StackableImages(filePath);
+
     }
 
     public static StackableImages getStackableImages(){
@@ -43,11 +56,8 @@ public final class StackerInterface {
 
     }
 
-    public static void importStackableImage(String filePath ) throws ImportException{
 
-        stackableImages = new StackableImages(filePath);
 
-    }
 
 
 

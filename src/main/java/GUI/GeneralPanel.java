@@ -46,16 +46,18 @@ public final class GeneralPanel extends JPanel {
         try {
 
             getGeneralPanel().remove(getGeneralPanel().optionsPanel);
+            getGeneralPanel().optionsPanel.revalidate();
             getGeneralPanel().optionsPanel.repaint();
+
         }catch (NullPointerException e){
             System.out.println("The options panel was null. This is unexpected, but non fatal.");
         }
-        getGeneralPanel().repaint();
+
         getGeneralPanel().optionsPanel = newOptionsPanel;
         getGeneralPanel().add(newOptionsPanel, BorderLayout.WEST);
-        // FIXME when being called from the Navigation Panel
 
         newOptionsPanel.repaint();
+        getGeneralPanel().revalidate();
         getGeneralPanel().repaint();
 
 

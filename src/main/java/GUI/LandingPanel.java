@@ -1,5 +1,6 @@
 package GUI;
 
+import GUI.FileAndAlignmentSelection.StackSettingsPanel;
 import stacker.ImportException;
 
 import javax.swing.*;
@@ -59,14 +60,20 @@ public class LandingPanel extends JPanel {
                 JDialog dialog = optionPane.createDialog("Failed to Import");
                 dialog.setAlwaysOnTop(true);
                 dialog.setVisible(true);
+                return;
 
             }
 
+            GeneralPanel.setOptionsPanel(new StackSettingsPanel());
+            GUILauncher.mainFrame.setSize(new Dimension(900, 600));
+            GUILauncher.landingPanel.setVisible(false);
+            GUILauncher.generalPanel.setVisible(true);
+
 
         });
-        // TODO: Implement functionality of other buttons.
+        // TODO: Implement functionality of other button(s).
 
-        this.add( menuImage );
+        this.add(menuImage);
         this.add(scratchButton);
         this.add(importButton);
         this.add(editButton);

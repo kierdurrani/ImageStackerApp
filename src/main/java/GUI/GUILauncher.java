@@ -15,12 +15,12 @@ public class GUILauncher {
     public static LandingPanel landingPanel = new LandingPanel();
     public static GeneralPanel generalPanel = GeneralPanel.getGeneralPanel();
 
-    public static final String resourcesRoot = "C:\\Users\\Kier\\Developing\\ImageStackerGUI\\src\\main\\resources\\"; // TODO - make dynamic
+    public static final String resourcesRoot = "C:\\Users\\Kier\\Developing\\ImageStackerGUI\\src\\main\\resources\\"; // TODO - make dynamic & work in a jar file
 
     public static void main(String args[]) throws InterruptedException {
 
         try {
-            // TODO - fix
+            // FIXME
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
         } catch (Exception e) { System.out.println("FAILURE: look and feel"); }
 
@@ -42,16 +42,8 @@ public class GUILauncher {
         mainFrame.add(generalPanel);
         generalPanel.setVisible(false);
 
-        // TODO
-     //   PreviewPanel pPanel = new PreviewPanel();
-     //   generalPanel.add(pPanel, BorderLayout.EAST);
-     //   pPanel.setVisible(true);
-     //   pPanel.repaint();
-
-
         mainFrame.validate();
         mainFrame.repaint();
-        // TODO
 
         mainFrame.setSize(new Dimension(500,615));
         mainFrame.setVisible(true);

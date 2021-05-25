@@ -16,30 +16,30 @@ import java.io.IOException;
 public class FileSelectPanel extends JPanel {
 
     JList fileJList;
-    FileAndAlignmentPanel parentFileAndAlignmentPanel;
+  //  FileAndAlignmentPanel parentFileAndAlignmentPanel;
     JPanel buttonContainer = new JPanel();
     JButton ButtonRemoveImg = new JButton("Remove Image(s)");
     JButton ButtonAddImg = new JButton("Add Image(s)");
 
-    FileSelectPanel(FileAndAlignmentPanel parentPanel){
-        this.parentFileAndAlignmentPanel = parentPanel;
+    public FileSelectPanel(String[] defaultValues){
+        //this.parentFileAndAlignmentPanel = parentPanel;
 
-        // Initialise listmodel = list representation of the data + dynamic methods
+        // Initialise listmodel (a list representation of the data + dynamic methods)
         DefaultListModel listModel = new DefaultListModel();
         fileJList = new JList(listModel);
+        JScrollPane scrollPane = new JScrollPane(fileJList);  // Add list to scroll pane
+
         fileJList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         fileJList.setLayoutOrientation(JList.VERTICAL);
         fileJList.setVisibleRowCount(-1);
 
-        listModel.addElement("C:\\Users\\Kier\\Developing\\Space Image Stack Project\\PICTURE LIBRARY\\282CANON\\IMG_1311.JPG");
-        listModel.addElement("C:\\Users\\Kier\\Developing\\Space Image Stack Project\\PICTURE LIBRARY\\282CANON\\IMG_1320.JPG");
+        for(String value: defaultValues){
+            listModel.addElement(value);
+        }
 
-        // Add list to scroll pane
-        JScrollPane scrollPane = new JScrollPane(fileJList);
+
 
         // Create Add/Remove image Buttons
-
-
         ButtonAddImg.setEnabled(true);
         ButtonAddImg.setSize(new Dimension(200, 25));
         ButtonAddImg.addActionListener(new ActionListener() {
@@ -107,7 +107,7 @@ public class FileSelectPanel extends JPanel {
         this.setLayout(new BorderLayout());
         this.add(scrollPane, BorderLayout.CENTER);
         this.add(buttonContainer, BorderLayout.SOUTH);
-        this.setBorder(BorderFactory.createTitledBorder("Select Image Files"));
+        this.setBorder(BorderFactory.createTitledBorder("Image Files"));
 
     }
 

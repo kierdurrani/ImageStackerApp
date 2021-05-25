@@ -17,10 +17,12 @@ public class FileAndAlignmentPanel extends JPanel {
 
     public FileAndAlignmentPanel(GeneralPanel parentGeneralPanel) {
 
-        fileSelectionPanel = new FileSelectPanel(this);
+        String[] defaultValues = {
+                "C:\\Users\\Kier\\Developing\\Space Image Stack Project\\PICTURE LIBRARY\\282CANON\\IMG_1311.JPG",
+                "C:\\Users\\Kier\\Developing\\Space Image Stack Project\\PICTURE LIBRARY\\282CANON\\IMG_1320.JPG"};
+        fileSelectionPanel = new FileSelectPanel(defaultValues);
         alignmentPanel = new AlignmentPanel(this);
         navigationPanel = new NavigationPanel(this);
-
 
         // Create window frame, add scroll pain and button container.
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -58,17 +60,17 @@ public class FileAndAlignmentPanel extends JPanel {
 
     }
 
-    public void setNavigationButtonsEnabled(boolean b){
+    public void setNavigationButtonsEnabled(boolean isEnabled){
 
-        navigationPanel.nextButton.setEnabled(b);
-        navigationPanel.backButton.setEnabled(b);
-        fileSelectionPanel.fileJList.setEnabled(b);
-        fileSelectionPanel.setEnabled(b);
-        fileSelectionPanel.ButtonAddImg.setEnabled(b);
-        fileSelectionPanel.ButtonRemoveImg.setEnabled(b);
-        alignmentPanel.saveParamButton.setEnabled(b);
+        navigationPanel.nextButton.setEnabled(isEnabled);
+        navigationPanel.backButton.setEnabled(isEnabled);
+        fileSelectionPanel.fileJList.setEnabled(isEnabled);
+        fileSelectionPanel.setEnabled(isEnabled);
+        fileSelectionPanel.ButtonAddImg.setEnabled(isEnabled);
+        fileSelectionPanel.ButtonRemoveImg.setEnabled(isEnabled);
+        alignmentPanel.saveParamButton.setEnabled(isEnabled);
 
-        if(b){
+        if(isEnabled){
             alignmentPanel.saveParamButton.setVisible(true);
         }
         

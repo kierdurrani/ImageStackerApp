@@ -7,7 +7,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import GUI.GeneralPanel;
-import GUI.StackSettings.StackSettingsPanel;
 import GUI.StackerInterface;
 
 public class NavigationPanel extends JPanel {
@@ -35,8 +34,21 @@ public class NavigationPanel extends JPanel {
                 // GeneralPanel.getGeneralPanel().option
 
                 if( StackerInterface.getStackableImages() != null ){
-                    System.out.println("Next button clicked. Going to the stacking panel");
-                    GeneralPanel.setOptionsPanel(new StackSettingsPanel());
+
+
+                        System.out.println("Next button clicked. Going to the stacking panel");
+                        JPanel panel = new StackSettingsPanel();
+                        GeneralPanel.setOptionsPanel(panel);
+                        //GeneralPanel.setOptionsPanel(panel);
+
+                        System.out.println("got here");
+                        System.out.println(GeneralPanel.getGeneralPanel().optionsPanel);
+
+            // todo- see
+
+
+                    // FIXME - doesnt render properly
+
                 }
             }
         });
