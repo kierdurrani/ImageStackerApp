@@ -46,8 +46,6 @@ public class GreyImage extends ImageWriter {
         return greyArray;
     }
 
-    // Implement abstract Methods
-
     // Mathematical Filters for the ImageWriter:
     public GreyImage gaussian() {
         int[][] output = new int[greyArray.length][greyArray[0].length];
