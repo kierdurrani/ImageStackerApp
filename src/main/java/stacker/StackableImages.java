@@ -1,8 +1,9 @@
 package stacker;
 
-import java.io.*;
-import java.text.ParseException;
-import java.util.Stack;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class StackableImages {
 
@@ -16,9 +17,10 @@ public class StackableImages {
     }
 
     // Constructor: Import Stacking Parameters from a text file.
-    public StackableImages(String filePath) {
+    public StackableImages(String filePath) throws ImportException {
         ImageStackerMain.MainLogger.info("Creating StackableImage object from file import: " + filePath);
-        try {
+        try
+        {
             // Read data from file
             File file = new File(filePath);
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -28,7 +30,7 @@ public class StackableImages {
             String[] Paths = line.split(";");
             this.imagePaths = Paths;
 
-            // All subsequent lines are offset coords seperated by "," and ";"
+            // Parse all subsequent lines, which are offset co-ords separated by "," and ";"
             offsetParameterTable = new OffsetParameters[imagePaths.length][imagePaths.length];
             for (int i = 0; i < imagePaths.length; i++) {
                 line = reader.readLine();
@@ -39,34 +41,38 @@ public class StackableImages {
                 }
             }
 
-            // Validation - isConsistent will throw if table isnt initalized. Warn if not consistent.
+            // Validation - for consistency / file existence - this also verifies everything is non-null
+            if(offsetParameterTable.length != imagePaths.length){
+                throw(new ImportException("File syntax errors - not enough lines of coordinates."));
+            }
             if (!this.isConsistent()) {
-                ImageStackerMain.MainLogger.warn("Import of stackableImage  succeeded but was not found to be consistent");
+                ImageStackerMain.MainLogger.warn("Import of stackableImage succeeded but was not found to be consistent");
             }
             for (String imagePath : imagePaths) {
                 File f = new File(imagePath);
                 if (!f.exists()) {
                     ImageStackerMain.MainLogger.warn("Image file not found in expected location. Please correct before continuing: " + filePath);
-                    // TODO - catch properly?
                 }
             }
 
-            // TODO -  verify the table isnt transposed!
-            // TODO -  verify error handling is graceful: Catch out of bounds, perform validate on coords, verify non null table entries, catch parse errors, verify images exist?
+
         } catch (IOException e) {
             ImageStackerMain.MainLogger.error("Error: " + e);
             ImageStackerMain.MainLogger.error("Import of StackableImage File Failed: " + filePath);
-            System.exit(111);
+
+            throw (new ImportException("Import Failure - file not found / could not be opened at: " + filePath));
+
         } catch (ArrayIndexOutOfBoundsException e) {
-            // Caused by bad
+            throw (new ImportException("Import Failure - syntax error in file / invalid data. 0x01"));
 
         } catch (NumberFormatException e) {
             ImageStackerMain.MainLogger.error("Error Parsing Numbers during StackableImages Import of: " + filePath);
+            throw (new ImportException("Import Failure - syntax error in file / invalid data. 0x02"));
 
         } catch (NullPointerException e) {
-
+            throw (new ImportException("Import Failure - syntax error in file / invalid data 0x03"));
         }
-        ImageStackerMain.MainLogger.info("Write to disk successful.");
+        ImageStackerMain.MainLogger.info("Loaded StackableImages from file successfully.");
     }
 
     public void populateOffsetParameters() {

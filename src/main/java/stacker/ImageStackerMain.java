@@ -33,7 +33,7 @@ public class ImageStackerMain {
     // TODO: Abstract away the stacking procedure from Stackable images into a separate customisable class. - Done, just need to make customisable!
     // TODO: Create a separate factory class for the creation of OffsetParams from 2 images.
     // TODO: Fix Log4j2.properties so that the logfile WORKS and is CUSTOMISABLE
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ImportException {
 
         // Initialization
         System.setProperty("filename", logFile);
@@ -41,7 +41,9 @@ public class ImageStackerMain {
 
         // align(inptDir, outpDir);
 
+
         StackableImages stackableImages = new StackableImages(rootDir + instanceName + ".txt");
+
         System.out.println(stackableImages.isConsistent());
 
         try{
