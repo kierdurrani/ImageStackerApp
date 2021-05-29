@@ -1,7 +1,7 @@
 package GUI;
 
 import GUI.FileAndAlignmentSelection.StackSettingsPanel;
-import stacker.ImportException;
+import stacker.alignment.ImportException;
 
 import javax.swing.*;
 import java.awt.*;

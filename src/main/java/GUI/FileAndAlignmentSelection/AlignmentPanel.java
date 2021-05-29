@@ -63,8 +63,11 @@ public class AlignmentPanel extends JPanel {
 
             Thread t1 = new Thread( () -> {
 
-                StackerInterface.calculateStackableImages(imagePaths);
-
+                try {
+                    StackerInterface.calculateStackableImages(imagePaths);
+                }catch(IOException exception){
+                    // TODO - implement error handling.
+                }
                 parentFileAndAlignmentPanel.setNavigationButtonsEnabled(true);
                 calcAlignParamsButton.setEnabled(true);
                 testStarDetection.setEnabled(true);

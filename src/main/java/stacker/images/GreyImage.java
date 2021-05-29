@@ -1,4 +1,4 @@
-package stacker;
+package stacker.images;
 
 import java.awt.image.BufferedImage;
 import java.io.File;

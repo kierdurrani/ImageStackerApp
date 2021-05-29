@@ -1,6 +1,11 @@
 package GUI;
 
 import stacker.*;
+import stacker.alignment.ImportException;
+import stacker.alignment.OffsetParameters;
+import stacker.alignment.StackableImages;
+import stacker.alignment.StarCoordinates;
+import stacker.images.RGBImage;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -18,8 +23,9 @@ public final class StackerInterface {
     }
 
     // Long calculation functions:
-    public static void calculateStackableImages(String[] imagePaths){
-        stackableImages = new StackableImages(imagePaths);
+    public static void calculateStackableImages(String[] imagePaths) throws IOException {
+        stackableImages = StackableImages.calculateAlignmentParameters(imagePaths);
+
         System.out.println("THIS IS COMPLETE");
     }
 
@@ -28,9 +34,9 @@ public final class StackerInterface {
     }
 
     // Wrapper functions for methods in other package:
-    public static void importStackableImage(String filePath ) throws ImportException{
+    public static void importStackableImage(String filePath ) throws ImportException {
 
-        stackableImages = new StackableImages(filePath);
+        stackableImages = StackableImages.importAlignmentParameters(filePath);
 
     }
 

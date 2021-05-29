@@ -3,6 +3,11 @@ package stacker;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import stacker.alignment.ImportException;
+import stacker.alignment.StackableImages;
+import stacker.images.RGBImage;
+import stacker.stacking.StackingMethod;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -42,12 +47,13 @@ public class ImageStackerMain {
         // align(inptDir, outpDir);
 
 
-        StackableImages stackableImages = new StackableImages(rootDir + instanceName + ".txt");
+        // AlignedImages stackableImages = new AlignedImages(rootDir + instanceName + ".txt");
+        StackableImages stackableImages = StackableImages.importAlignmentParameters(rootDir + instanceName + ".txt");
 
         System.out.println(stackableImages.isConsistent());
 
         try{
-            RGBImage finalStack = StackerFactory.stackImage(stackableImages);
+            RGBImage finalStack = StackingMethod.stackImage(stackableImages);
             System.out.println(outpDir + instanceName + "orionMega.jpg");
             finalStack.writeToDisk(outpDir + instanceName + "orionMega.jpg");
 
@@ -99,7 +105,7 @@ public class ImageStackerMain {
         String[] wFiles = copyFilesToWorkingDir(iFiles);
 
         // Create StackableImages DataStructure
-        StackableImages imagesToStack = new StackableImages(wFiles);
+        StackableImages imagesToStack = StackableImages.calculateAlignmentParameters(wFiles);
         writeStringArrayToFile(rootDir + instanceName + ".txt", imagesToStack.getStringRepresentation());
 
         System.out.println(imagesToStack.isConsistent());

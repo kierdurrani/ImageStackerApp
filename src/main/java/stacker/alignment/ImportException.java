@@ -1,4 +1,4 @@
-package stacker;
+package stacker.alignment;
 
 public class ImportException extends Exception{
 

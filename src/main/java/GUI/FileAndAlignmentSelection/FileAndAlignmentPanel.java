@@ -1,7 +1,6 @@
 package GUI.FileAndAlignmentSelection;
 
 import GUI.GeneralPanel;
-import stacker.StackableImages;
 
 import javax.swing.*;
 import java.awt.*;

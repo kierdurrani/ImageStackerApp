@@ -1,4 +1,4 @@
-package stacker;
+package stacker.images;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

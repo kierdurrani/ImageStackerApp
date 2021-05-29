@@ -1,4 +1,4 @@
-package stacker;
+package stacker.alignment;
 
 public class StarCoordinates implements Comparable<StarCoordinates> {
     private final int xOriginal;
@@ -7,7 +7,6 @@ public class StarCoordinates implements Comparable<StarCoordinates> {
     // The below values are used to represent coordinates after transformations have been applied to the star.
     private int x;
     private int y;
-
 
     public StarCoordinates(int x, int y) {
         this.xOriginal = x;
@@ -40,4 +39,5 @@ public class StarCoordinates implements Comparable<StarCoordinates> {
         return this.x - o.getX();
         // Sort on x Value and: "Return -ve if this is smaller that the other object".
     }
+
 }

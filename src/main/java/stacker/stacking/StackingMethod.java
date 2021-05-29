@@ -1,4 +1,9 @@
-package stacker;
+package stacker.stacking;
+
+import stacker.ImageStackerMain;
+import stacker.alignment.OffsetParameters;
+import stacker.alignment.StackableImages;
+import stacker.images.RGBImage;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -6,8 +11,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class StackerFactory {
+// This class should be easy to override to provide different stacking methods
 
+public class StackingMethod {
+
+    // This should be overridden by any class which want a different stacking method
     public static RGBImage stackImage(StackableImages stackableImages) throws IOException {
         long time = System.currentTimeMillis();
         ImageStackerMain.MainLogger.info("Starting the Stacking Process.");
@@ -120,6 +128,66 @@ public class StackerFactory {
         int imgsUsed = (inputBrightness.length - 10);
         outputBrightness = normaliseBrightness(outputBrightness, imgsUsed);
         return outputBrightness;
+    }
+
+
+
+    // TODO - Work out if this method is actually useful / distinct from the one above?
+    // TODO: make this safe so that images can be different sizes?
+    // TODO: Use working folder.
+    // TODO: Abstract into StackerFactor Class
+    public RGBImage stackAll(StackableImages imagesToStack) throws IOException {
+
+        String[] imagePaths =  imagesToStack.getImagePaths();
+        OffsetParameters[][] offsetParameterTable =  imagesToStack.getOffsetParameterTable();
+
+        long time = System.currentTimeMillis();
+        System.out.println("Starting the Stacking Process... ");
+        ImageStackerMain.MainLogger.info("Starting the Stacking Process.");
+
+        int[][][][] imageList = new int[imagePaths.length][][][];
+        for (int imageNumber = 0; imageNumber < imageList.length; imageNumber++) {
+            imageList[imageNumber] = (new RGBImage(imagePaths[imageNumber])).getRgbArray();  // WARNING: May
+        }
+
+        int[][][] finalBrightness = new int[imageList[0].length][imageList[0][0].length][3];
+        // Use the first image in the stack as a reference, and then stack all the others using offset compared to first.
+        // Iterate over all pictures:
+        for (int imageNumber = 0; imageNumber < imageList.length; imageNumber++) {
+            int xOffset = offsetParameterTable[0][imageNumber].getX();
+            int yOffset = offsetParameterTable[0][imageNumber].getY();
+
+            // TODO: Make this always work, rather than just arbitrary factor of 0.95 - Need to go upto maximum offset or something?
+            for (int j = Math.abs(yOffset); j < (int) (0.95 * (imageList[imageNumber].length)); j++) {
+                for (int i = Math.abs(xOffset); i < (int) (0.95 * (imageList[imageNumber][j].length)); i++) {
+                    for (int colour = 0; colour < 3; colour++) {
+                        finalBrightness[j + yOffset][i + xOffset][colour] += imageList[imageNumber][j][i][colour];
+                    }
+                }
+            }
+        }
+        // Normalise Brightness
+        // TODO: make less shit
+        double exp = 0.93;
+        for (int j = 0; j < finalBrightness.length; j++) {
+            for (int i = 0; i < finalBrightness[0].length; i++) {
+                int totBrightness = 0;
+                for (int colour = 0; colour < 3; colour++) {
+//                    totBrightness +=  finalBrightness[j][i][colour];
+                    finalBrightness[j][i][colour] = (int) Math.pow(Math.pow(255.0, 1 / exp - 1.0) * finalBrightness[j][i][colour] / (offsetParameterTable.length), exp);
+                }
+
+//                totBrightness /= 3;
+//                int brightnessMultiplier =  Math.pow((totBrightness *  offsetParameterTable.length),
+//                for (int colour = 0; colour < 3; colour++) {
+//                    finalBrightness[j][i][colour] = (int) Math.pow(245.0 * finalBrightness[j][i][colour] / (totBrightness *  offsetParameterTable.length), 0.7);
+//                }
+
+            }
+        }
+        time = System.currentTimeMillis() - time;
+        System.out.println("Finished the Stacking Process in: " + time + "ms");
+        return (new RGBImage(finalBrightness));
     }
 
 
