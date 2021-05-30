@@ -1,10 +1,7 @@
 package GUI;
 
 import stacker.*;
-import stacker.alignment.ImportException;
-import stacker.alignment.OffsetParameters;
-import stacker.alignment.StackableImages;
-import stacker.alignment.StarCoordinates;
+import stacker.alignment.*;
 import stacker.images.RGBImage;
 
 import java.awt.image.BufferedImage;
@@ -50,10 +47,10 @@ public final class StackerInterface {
         RGBImage rgbImage = RGBImage.makeFromBufferedImage(image);
 
         System.out.println("Finding Stars");
-        ArrayList<StarCoordinates> starCords = OffsetParameters.getStarCords(rgbImage);
+        ArrayList<AMethodStarDetection.StarCoordinates> starCords = AMethodStarDetection.findStarCoordinates(rgbImage);
 
         System.out.println("Marking Stars. There were: " + starCords.size());
-        for (StarCoordinates cord : starCords) {
+        for (AMethodStarDetection.StarCoordinates cord : starCords) {
             rgbImage.makeGreenCross(cord.getX(), cord.getY());
         }
         System.out.println("Converting back");

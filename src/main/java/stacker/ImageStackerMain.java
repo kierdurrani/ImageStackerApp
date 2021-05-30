@@ -33,11 +33,9 @@ public class ImageStackerMain {
     private static String outpDir = rootDir + "outFiles\\";
     private static String logFile = rootDir + "LOG:" + System.currentTimeMillis() + ".log";
 
-    // TODO: Export and import Stackable Images to Text Files in a consistent way.          -Just tidy up errors
     // TODO: Create a generic static methods to easily build workflows in main()
     // TODO: Abstract away the stacking procedure from Stackable images into a separate customisable class. - Done, just need to make customisable!
-    // TODO: Create a separate factory class for the creation of OffsetParams from 2 images.
-    // TODO: Fix Log4j2.properties so that the logfile WORKS and is CUSTOMISABLE
+    // TODO: Log4j tidying up and make the logging level CUSTOMISABLE
     public static void main(String[] args) throws IOException, ImportException {
 
         // Initialization
@@ -65,6 +63,7 @@ public class ImageStackerMain {
     }
 
 
+    // Static I/O Utilities:
     public static void writeStringArrayToFile(String filename, String[] data) throws IOException {
         BufferedWriter outputWriter = new BufferedWriter(new FileWriter(filename));
         for (int i = 0; i < data.length; i++) {

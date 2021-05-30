@@ -17,7 +17,7 @@ public class GUILauncher {
 
     public static final String resourcesRoot = "C:\\Users\\Kier\\Developing\\ImageStackerGUI\\src\\main\\resources\\"; // TODO - make dynamic & work in a jar file
 
-    public static void main(String args[]) throws InterruptedException {
+    public static void main(String args[]) {
 
         try {
             // FIXME

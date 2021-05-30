@@ -12,7 +12,7 @@ public class StackableImages {
     private String[] imagePaths;
     private OffsetParameters[][] offsetParameterTable;
 
-    public static AbstractAlignmentMethod defaultAlignmentMethod = new AlignmentMethodDefault();
+    public static AbstractAlignmentMethod defaultAlignmentMethod = new AMethodStarDetection();
 
     // Constructors - take array of imagePaths method of calculating offset params
     public StackableImages(String[] imagePaths, OffsetParameters[][] alignmentParameters){
