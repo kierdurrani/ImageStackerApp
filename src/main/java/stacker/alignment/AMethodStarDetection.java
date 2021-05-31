@@ -2,6 +2,7 @@ package stacker.alignment;
 
 import stacker.ImageStackerMain;
 import stacker.images.RGBImage;
+import stacker.ProgressBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.ListIterator;
 public class AMethodStarDetection extends AbstractAlignmentMethod{
 
     @Override
-    public OffsetParameters calculateOffsetParameters(RGBImage rgbImg1, RGBImage rgbImg2) {
+    public OffsetParameters calculateOffsetParameters(RGBImage rgbImg1, RGBImage rgbImg2, ProgressBar progressBar) {
 
         ArrayList<StarCoordinates> starCoordinates1 = findStarCoordinates(rgbImg1);
         ArrayList<StarCoordinates> starCoordinates2 = findStarCoordinates(rgbImg2);
@@ -24,14 +25,14 @@ public class AMethodStarDetection extends AbstractAlignmentMethod{
 
         int yMax = rgbImg1.getRgbArray().length / 2;
         int xMax = rgbImg1.getRgbArray()[0].length / 2;
-        int nextPercentProgressAlert = 10;
+        int nextPercentProgressAlert = 5;
 
         for (int yOffset = -yMax; yOffset < yMax; yOffset += 5) {
             // Calculate Progress
-            double percentComplete = 50.0 * (yOffset + yMax) / yMax;
+            double percentComplete = (50.0 * (yOffset + yMax)) / yMax;
             if(percentComplete>nextPercentProgressAlert){
-                nextPercentProgressAlert += 10;
-                System.out.println( (int) percentComplete + "%");
+                nextPercentProgressAlert += 5;
+                progressBar.setProgressPercent((int) percentComplete);
             }
 
             for (int xOffset = -xMax; xOffset < xMax; xOffset += 5) {
@@ -187,7 +188,7 @@ public class AMethodStarDetection extends AbstractAlignmentMethod{
         return starAlignmentCount;
     }
 
-    // Helper Class:
+    // Helper Class to represent the location of stars within the image.
     public static class StarCoordinates implements Comparable<StarCoordinates> {
         // The ordering makes it faster to perform certain operations on lists.
         private final int xOriginal;
@@ -230,5 +231,61 @@ public class AMethodStarDetection extends AbstractAlignmentMethod{
         }
 
     }
+
+    // TODO - make bounds non arbitrary. Then move to child classes
+    protected int crossCorrelation(int[][] img1, int[][] img2, int xOffset, int yOffset) {
+        // Assert offsets are bounded between 0-75% of dimension.
+
+        int correlation = 0;
+
+        // Having a -ve offset is the same as offsetting the OTHER picture by a positive amount.
+        // Do this by inverting the bounds of the for loop
+
+        // TODO: FIX THE BOUNDS ON THE FOR LOOPS. - 0.75 factor is arbitrary
+        int yLimit = (int) (0.75 * Math.min(img2.length, img1.length));
+        int xLimit = (int) (0.75 * Math.min(img2[0].length, img1[0].length));
+
+        if (xOffset >= 0) {
+            if (yOffset >= 0) {
+                //  +x +y
+                for (int y = yOffset; y < (yLimit - yOffset); y++) {
+                    for (int x = xOffset; x < (xLimit - xOffset); x++) {
+                        correlation += img1[y + yOffset][x + xOffset] * img2[y][x];
+                    }
+                }
+            } else {
+                //  +x -y
+                yOffset = -yOffset;
+                for (int y = yOffset; y < (yLimit - yOffset); y++) {
+                    for (int x = xOffset; x < (xLimit - xOffset); x++) {
+                        correlation += img1[y][x + xOffset] * img2[y + yOffset][x] ;
+                    }
+                }
+            }
+        } else {
+            // then -ve x
+            xOffset = -xOffset;
+            if (yOffset >= 0) {
+                //  -x +y
+                for (int y = yOffset; y < (yLimit - yOffset); y++) {
+                    for (int x = xOffset; x < (xLimit - xOffset); x++) {
+                        correlation += img1[y + yOffset][x] * img2[y][x + xOffset];
+                    }
+                }
+            } else {
+                // -x -y
+                yOffset = -yOffset;
+                for (int y = yOffset; y < (yLimit - yOffset); y++) {
+                    for (int x = xOffset; x < (xLimit - xOffset); x++) {
+                        correlation += img1[y][x] * img2[y + yOffset][x + xOffset];
+                    }
+                }
+            }
+        }
+        return (correlation);
+    }
+
+
+
 
 }

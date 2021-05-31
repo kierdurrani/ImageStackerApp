@@ -20,8 +20,10 @@ public final class StackerInterface {
     }
 
     // Long calculation functions:
-    public static void calculateStackableImages(String[] imagePaths) throws IOException {
-        stackableImages = StackableImages.calculateAlignmentParameters(imagePaths);
+    public static void calculateOffsetParameters(String[] imagePaths, ProgressBar progressBar) throws IOException {
+
+
+        stackableImages = StackableImages.calculateAlignmentParameters(imagePaths, null, progressBar);
 
         System.out.println("THIS IS COMPLETE");
     }

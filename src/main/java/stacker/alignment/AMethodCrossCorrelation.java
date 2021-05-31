@@ -3,13 +3,14 @@ package stacker.alignment;
 import stacker.ImageStackerMain;
 import stacker.images.GreyImage;
 import stacker.images.RGBImage;
+import stacker.ProgressBar;
 
 public class AMethodCrossCorrelation extends AbstractAlignmentMethod{
 
     // Inherits calculateAllAlignments(String[] filePaths) - which generates table using below method
 
     @Override
-    public OffsetParameters calculateOffsetParameters(RGBImage RGBimg1, RGBImage RGBimg2) {
+    public OffsetParameters calculateOffsetParameters(RGBImage RGBimg1, RGBImage RGBimg2, ProgressBar progressBar) {
 
         ImageStackerMain.MainLogger.info("Starting Alignment of pair.");
 
@@ -66,6 +67,62 @@ public class AMethodCrossCorrelation extends AbstractAlignmentMethod{
         }
         return output;
     }
+
+
+
+    // TODO - make bounds non arbitrary. Then move to child classes
+    protected int crossCorrelation(int[][] img1, int[][] img2, int xOffset, int yOffset) {
+        // Assert offsets are bounded between 0-75% of dimension.
+
+        int correlation = 0;
+
+        // Having a -ve offset is the same as offsetting the OTHER picture by a positive amount.
+        // Do this by inverting the bounds of the for loop
+
+        // TODO: FIX THE BOUNDS ON THE FOR LOOPS. - 0.75 factor is arbitrary
+        int yLimit = (int) (0.75 * Math.min(img2.length, img1.length));
+        int xLimit = (int) (0.75 * Math.min(img2[0].length, img1[0].length));
+
+        if (xOffset >= 0) {
+            if (yOffset >= 0) {
+                //  +x +y
+                for (int y = yOffset; y < (yLimit - yOffset); y++) {
+                    for (int x = xOffset; x < (xLimit - xOffset); x++) {
+                        correlation += img1[y + yOffset][x + xOffset] * img2[y][x];
+                    }
+                }
+            } else {
+                //  +x -y
+                yOffset = -yOffset;
+                for (int y = yOffset; y < (yLimit - yOffset); y++) {
+                    for (int x = xOffset; x < (xLimit - xOffset); x++) {
+                        correlation += img1[y][x + xOffset] * img2[y + yOffset][x] ;
+                    }
+                }
+            }
+        } else {
+            // then -ve x
+            xOffset = -xOffset;
+            if (yOffset >= 0) {
+                //  -x +y
+                for (int y = yOffset; y < (yLimit - yOffset); y++) {
+                    for (int x = xOffset; x < (xLimit - xOffset); x++) {
+                        correlation += img1[y + yOffset][x] * img2[y][x + xOffset];
+                    }
+                }
+            } else {
+                // -x -y
+                yOffset = -yOffset;
+                for (int y = yOffset; y < (yLimit - yOffset); y++) {
+                    for (int x = xOffset; x < (xLimit - xOffset); x++) {
+                        correlation += img1[y][x] * img2[y + yOffset][x + xOffset];
+                    }
+                }
+            }
+        }
+        return (correlation);
+    }
+
 
 
 }

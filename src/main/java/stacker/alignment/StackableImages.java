@@ -1,6 +1,8 @@
 package stacker.alignment;
 
 import stacker.ImageStackerMain;
+import stacker.ProgressBar;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -21,12 +23,12 @@ public class StackableImages {
     }
 
     // Generate new instances of the object through a lengthy alignment algorithm.
-    public static StackableImages calculateAlignmentParameters(String[] imagePaths) throws IOException {
-        return calculateAlignmentParameters(imagePaths, defaultAlignmentMethod);
-    }
+    public static StackableImages calculateAlignmentParameters(String[] imagePaths, AbstractAlignmentMethod alignmentMethod, ProgressBar progressBar) throws IOException{
 
-    public static StackableImages calculateAlignmentParameters(String[] imagePaths, AbstractAlignmentMethod alignmentMethod) throws IOException{
-        return new StackableImages(imagePaths, alignmentMethod.calculateAllAlignments(imagePaths));
+        if(progressBar     == null) { progressBar = new ProgressBar("PLACEHOLDER 1"); }
+        if(alignmentMethod == null) { alignmentMethod = defaultAlignmentMethod; }
+
+        return new StackableImages(imagePaths, alignmentMethod.calculateOffsetParameterTable(imagePaths, progressBar));
     }
 
     public static StackableImages importAlignmentParameters(String filePath) throws ImportException {

@@ -2,6 +2,7 @@ package GUI.FileAndAlignmentSelection;
 
 import GUI.GeneralPanel;
 import GUI.StackerInterface;
+import stacker.ProgressBar;
 
 import javax.swing.*;
 import java.awt.*;
@@ -64,7 +65,26 @@ public class AlignmentPanel extends JPanel {
             Thread t1 = new Thread( () -> {
 
                 try {
-                    StackerInterface.calculateStackableImages(imagePaths);
+                    ProgressBar progressBar =  new ProgressBar("calculating all offset parameters");
+
+                    Thread progressPollerThread = new Thread( () -> {
+                        while(true)
+                        {
+                            try
+                            {
+                                Thread.sleep(400);
+                                jTextArea.setText(progressBar.printPercent());
+
+                            } catch (InterruptedException exception) {}
+                        }
+                    });
+                    progressPollerThread.start();
+
+                    StackerInterface.calculateOffsetParameters(imagePaths, progressBar);
+
+                    progressPollerThread.interrupt();
+                    progressPollerThread.stop();
+
                 }catch(IOException exception){
                     // TODO - implement error handling.
                 }

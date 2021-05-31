@@ -104,7 +104,7 @@ public class ImageStackerMain {
         String[] wFiles = copyFilesToWorkingDir(iFiles);
 
         // Create StackableImages DataStructure
-        StackableImages imagesToStack = StackableImages.calculateAlignmentParameters(wFiles);
+        StackableImages imagesToStack = StackableImages.calculateAlignmentParameters(wFiles, null, null);
         writeStringArrayToFile(rootDir + instanceName + ".txt", imagesToStack.getStringRepresentation());
 
         System.out.println(imagesToStack.isConsistent());
