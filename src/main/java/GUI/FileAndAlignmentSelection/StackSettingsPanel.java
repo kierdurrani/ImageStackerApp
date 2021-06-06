@@ -42,7 +42,7 @@ public class StackSettingsPanel extends JPanel{
         String folder = firstImagePath.replaceAll( "[^\\\\]*$" ,"").replaceAll("\\\\$","");
 
         JTextField outDirectoryField =  new JTextField(folder);
-        ContainerPanel.add(new JLabel("Output Directory: "));
+        ContainerPanel.add(new JLabel("Working Directory: "));
         ContainerPanel.add(outDirectoryField);
 
         ContainerPanel.add(new JLabel("Output FileName: "));
@@ -56,7 +56,7 @@ public class StackSettingsPanel extends JPanel{
             
             Thread stackerThread = new Thread( () -> {
 
-
+                StackerInterface.stackImages1();
 
 
             });

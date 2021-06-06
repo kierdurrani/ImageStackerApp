@@ -1,6 +1,7 @@
 package stacker.stacking;
 
 import stacker.ImageStackerMain;
+import stacker.ProgressBar;
 import stacker.alignment.OffsetParameters;
 import stacker.alignment.StackableImages;
 import stacker.images.RGBImage;
@@ -11,12 +12,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
-// This class should be easy to override to provide different stacking methods
+public class StackingMethodOld extends AbstractStackingMethod {
 
-public class StackingMethod {
+    @Override
+    public RGBImage stackImages(StackableImages stackableImages, ProgressBar progressBar) throws IOException {
 
-    // This should be overridden by any class which want a different stacking method
-    public static RGBImage stackImage(StackableImages stackableImages) throws IOException {
         long time = System.currentTimeMillis();
         ImageStackerMain.MainLogger.info("Starting the Stacking Process.");
 
@@ -31,7 +31,8 @@ public class StackingMethod {
         int yMaxOffset = 0;
         int xMinOffset = 0;
         int yMinOffset = 0;
-        for (OffsetParameters offset : offsetParameterTable[0]) {
+        for (OffsetParameters offset : offsetParameterTable[0])
+        {
             if (offset.getX() > xMaxOffset) {
                 xMaxOffset = offset.getX();
             }
@@ -118,7 +119,7 @@ public class StackingMethod {
         return y;
     }
 
-    private static int calculateFinalBrightness(int[] inputBrightness) {
+    private static int calculateFinalBrightness(int[] inputBrightness){
 
         Arrays.sort(inputBrightness);
         int outputBrightness = 0;
@@ -130,12 +131,8 @@ public class StackingMethod {
         return outputBrightness;
     }
 
-
-
     // TODO - Work out if this method is actually useful / distinct from the one above?
-    // TODO: make this safe so that images can be different sizes?
-    // TODO: Use working folder.
-    // TODO: Abstract into StackerFactor Class
+    // TODO: make this safe so that images can be different sizes? Use a working folder.
     public RGBImage stackAll(StackableImages imagesToStack) throws IOException {
 
         String[] imagePaths =  imagesToStack.getImagePaths();
@@ -189,6 +186,5 @@ public class StackingMethod {
         System.out.println("Finished the Stacking Process in: " + time + "ms");
         return (new RGBImage(finalBrightness));
     }
-
 
 }

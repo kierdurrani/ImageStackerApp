@@ -9,7 +9,7 @@ import java.io.IOException;
 public abstract class AbstractAlignmentMethod {
 
     // Class representing a general framework for calculating alignment param
-    // Derived classes just need to implement calculateOffsetParameters - to work out how the images are offset
+    // Derived classes just need to implement calculateOffsetParameters - to work out how a given pair of images are offset
 
     // States whether alignment should go through all pairs of images to explicitly work out, or just do one row and work out from that.
 
@@ -25,7 +25,6 @@ public abstract class AbstractAlignmentMethod {
     }
 
     public OffsetParameters[][] calculateOffsetParameterTable(String[] filePaths, ProgressBar progressBar) throws IOException{
-
         try
         {
             if (allPairs)
@@ -102,7 +101,5 @@ public abstract class AbstractAlignmentMethod {
 
         return offsetParameterTable;
     }
-
-
 
 }

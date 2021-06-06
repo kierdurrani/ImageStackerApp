@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 import stacker.alignment.ImportException;
 import stacker.alignment.StackableImages;
 import stacker.images.RGBImage;
-import stacker.stacking.StackingMethod;
+import stacker.stacking.StackingMethodOld;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -51,7 +51,8 @@ public class ImageStackerMain {
         System.out.println(stackableImages.isConsistent());
 
         try{
-            RGBImage finalStack = StackingMethod.stackImage(stackableImages);
+            StackingMethodOld stackingMethodOld = new StackingMethodOld();
+            RGBImage finalStack = stackingMethodOld.stackImages(stackableImages);
             System.out.println(outpDir + instanceName + "orionMega.jpg");
             finalStack.writeToDisk(outpDir + instanceName + "orionMega.jpg");
 

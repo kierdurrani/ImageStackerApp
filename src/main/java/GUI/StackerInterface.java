@@ -3,6 +3,8 @@ package GUI;
 import stacker.*;
 import stacker.alignment.*;
 import stacker.images.RGBImage;
+import stacker.stacking.AbstractStackingMethod;
+import stacker.stacking.StackingMethodPreTransform;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -28,8 +30,9 @@ public final class StackerInterface {
         System.out.println("THIS IS COMPLETE");
     }
 
-    public static void stackImages(){
+    public static void stackImages1(){
 
+        StackingMethodPreTransform preTransform = new StackingMethodPreTransform("","");
     }
 
     // Wrapper functions for methods in other package:
