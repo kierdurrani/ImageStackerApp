@@ -8,7 +8,7 @@ public class ProgressBar {
     // Thread safe way of calculating percent for big task made of lots of smaller ones:
     // percent complete is either calculated from this field, or from subtasks going recursively.
 
-    private final String TaskName;
+    public String TaskName;
     private int percent = 0;
     private ProgressBar parentTask;
 

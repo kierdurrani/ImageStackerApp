@@ -34,13 +34,15 @@ public class StackingMethodPreTransform extends AbstractStackingMethod {
     @Override
     public RGBImage stackImages(StackableImages stackableImages, ProgressBar progressBar) throws IOException{
 
-        ArrayList<String> transformedImagePaths = transformAllImages(stackableImages);
-        RGBImage stackedImage = stackTransformedImages(transformedImagePaths);
+        progressBar.populateSubTaskList(2, "Stacking phase");
+        progressBar.subTaskList.get(0).TaskName = "Transforming Images";
+
+        ArrayList<String> transformedImagePaths = transformAllImages( stackableImages, progressBar.subTaskList.get(0) );
+        RGBImage stackedImage = stackTransformedImages(transformedImagePaths, progressBar.subTaskList.get(1));
         return stackedImage;
     }
 
-
-    public ArrayList<String> transformAllImages(StackableImages stackableImages) throws IOException
+    public ArrayList<String> transformAllImages(StackableImages stackableImages, ProgressBar progressBar) throws IOException
     {
 
         // Use first row as the reference row
@@ -87,7 +89,7 @@ public class StackingMethodPreTransform extends AbstractStackingMethod {
             // Collate aligned values into the bufferTable
             BufferedImage transformedBufferedImage = transformBufferedImage(img, xOffset - xMinOffset, yOffset - yMinOffset, theta, canvasWidth, canvasHeight);
 
-            String fileName = workingDirectory + "\\" + stackName + imgNumber + ".png";
+            String fileName = workingDirectory + "\\" + stackName + imgNumber + "tmp.png";
 
             try {
                 File imageFile = new File(fileName);
@@ -97,13 +99,14 @@ public class StackingMethodPreTransform extends AbstractStackingMethod {
                 ImageStackerMain.MainLogger.error("IO OUT ERROR WHILE WRITING TO DISK");
                 System.out.println("[StackingMethodPreTransform]: IO Failure while writing" + fileName + "image to disk");
             }
+            progressBar.setProgressPercent((100*(imgNumber+1))/imagePaths.length);
         }
         //endregion
 
         return transformedImagePaths;
     }
 
-    public RGBImage stackTransformedImages(ArrayList<String> transformedImagePaths) throws IOException
+    public RGBImage stackTransformedImages(ArrayList<String> transformedImagePaths, ProgressBar progressBar) throws IOException
     {
 
         int pageSize = 400;
@@ -112,7 +115,7 @@ public class StackingMethodPreTransform extends AbstractStackingMethod {
 
 
         System.out.println("GOOOOOO!");
-        // Load in only {pageSize} y-values at a time to prevent memory overflow.
+        // Load in only {pageSize} y-values at a time to prevent memory overflow, then calculate brightness from buffer and store in finalValues.
         for (int yPagingOffset = 0; yPagingOffset < canvasHeight; yPagingOffset += pageSize) {
 
             System.out.println(yPagingOffset);
@@ -147,9 +150,9 @@ public class StackingMethodPreTransform extends AbstractStackingMethod {
                 }
             }
             //endregion
-
+            progressBar.setProgressPercent( (100 * (pageSize + yPagingOffset ) ) /canvasHeight);
         }
-
+        progressBar.setProgressPercent( 100 );
         RGBImage finalImage = new RGBImage(finalValues);
         return finalImage;
     }
@@ -174,7 +177,7 @@ public class StackingMethodPreTransform extends AbstractStackingMethod {
 
         int[] outputRGB = new int[3];
 
-        int sample = (RBGValueOfImages.length/2) -3;
+        int sample = (RBGValueOfImages.length/3);
         outputRGB[0] = colorImageArray[0][sample];
         outputRGB[1] = colorImageArray[1][sample];
         outputRGB[2] = colorImageArray[2][sample];

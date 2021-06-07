@@ -41,7 +41,7 @@ public class LandingLogo extends JPanel {
             BufferedImage img = getLogo("C:\\Users\\Kier\\Developing\\ImageStackerGUI\\src\\main\\resources\\img.png");
             Graphics2D g2d = (Graphics2D) g.create();
 
-            g2d.setTransform(new AffineTransform(this.getWidth()/500.0,0,0,this.getHeight()/500.0,0,0));
+            g2d.setTransform(new AffineTransform(this.getWidth()/400.0,0,0,this.getHeight()/400.0,0,0));
 
             g2d.drawImage(img,  null ,0,0);
 

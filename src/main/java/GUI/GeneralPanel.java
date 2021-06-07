@@ -17,7 +17,7 @@ public final class GeneralPanel extends JPanel {
     // constructor for singleton
     private GeneralPanel(){
 
-        optionsPanel = new AlignmentContextPanel(this);
+        optionsPanel = new AlignmentContextPanel();
         previewPanel = new PreviewPanel();
 
         this.setLayout(new BorderLayout());

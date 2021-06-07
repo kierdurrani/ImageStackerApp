@@ -14,7 +14,7 @@ public class AlignmentContextPanel extends JPanel {
     AlignmentOptionsPanel alignmentPanel;
     NavigationPanel navigationPanel;
 
-    public AlignmentContextPanel(GeneralPanel parentGeneralPanel) {
+    public AlignmentContextPanel() {
 
         String[] defaultValues = {
                 "C:\\Users\\Kier\\Developing\\Space Image Stack Project\\PICTURE LIBRARY\\282CANON\\IMG_1311.JPG",
@@ -25,6 +25,7 @@ public class AlignmentContextPanel extends JPanel {
 
         // Create window frame, add scroll pain and button container.
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setPreferredSize(new Dimension(400, 900));
         this.setMaximumSize(new Dimension(200, 900));
 
         // Add Components

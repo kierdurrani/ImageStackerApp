@@ -1,6 +1,10 @@
 package GUI.StackingContext;
 
+import GUI.AlignmentContext.AlignmentContextPanel;
 import GUI.AlignmentContext.FileSelectPanel;
+import GUI.AlignmentContext.NavigationPanel;
+import GUI.GUILauncher;
+import GUI.GeneralPanel;
 import GUI.StackerInterface;
 import stacker.ProgressBar;
 import stacker.images.RGBImage;
@@ -14,7 +18,7 @@ public class StackContextPanel extends JPanel{
 
     public JTextArea statusTextArea = new JTextArea("Click 'Stack Images' to start");
 
-    public StackContextPanel(boolean cameFromLandingPanel)
+    public StackContextPanel(AlignmentContextPanel previousNavigationPanel)
     {
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -75,6 +79,9 @@ public class StackContextPanel extends JPanel{
                     statusTextArea.setForeground(new Color(0, 150, 0));
                     statusTextArea.setText("Stacking Complete \nImage saved: " + stackName);
 
+                    GeneralPanel.setPreviewImage(stack.makeBufferedImage());
+
+
                 } catch (IOException exception) {
                     // Files missing during stacking
                     exception.printStackTrace();
@@ -96,7 +103,16 @@ public class StackContextPanel extends JPanel{
         stackButton.setPreferredSize(new Dimension(500, 25 ));
         this.add(backButton);
         backButton.addActionListener( e -> {
+            if(previousNavigationPanel == null){
 
+                GUILauncher.generalPanel.setVisible(false);
+                GUILauncher.landingPanel.setVisible(true);
+                GUILauncher.mainFrame.setSize(new Dimension(500,615));
+
+            }else{
+
+                GeneralPanel.setOptionsPanel(previousNavigationPanel);
+            }
         });
 
 

@@ -1,5 +1,7 @@
 package GUI;
 
+import GUI.AlignmentContext.AlignmentContextPanel;
+import GUI.AlignmentContext.NavigationPanel;
 import GUI.StackingContext.StackContextPanel;
 import stacker.alignment.ImportException;
 
@@ -17,7 +19,6 @@ public class LandingPanel extends JPanel {
         JPanel logoPanel = new LandingLogo();
         JPanel buttonContainer = new JPanel();
 
-
         // region button setup
         JButton scratchButton = new JButton("Select images and align");
         JButton importButton = new JButton("Import existing alignment settings");
@@ -34,6 +35,7 @@ public class LandingPanel extends JPanel {
         scratchButton.addActionListener(e -> {
             GUILauncher.mainFrame.setSize(new Dimension(900, 600));
             GUILauncher.landingPanel.setVisible(false);
+            GeneralPanel.setOptionsPanel(new AlignmentContextPanel());
             GUILauncher.generalPanel.setVisible(true);
         });
         importButton.addActionListener( e -> {
@@ -61,7 +63,7 @@ public class LandingPanel extends JPanel {
 
             }
 
-            GeneralPanel.setOptionsPanel(new StackContextPanel(true));
+            GeneralPanel.setOptionsPanel(new StackContextPanel(null));
             GUILauncher.mainFrame.setSize(new Dimension(900, 600));
             GUILauncher.landingPanel.setVisible(false);
             GUILauncher.generalPanel.setVisible(true);
