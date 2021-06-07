@@ -6,6 +6,7 @@ import stacker.alignment.AMethodStarDetection;
 import stacker.alignment.ImportException;
 import stacker.alignment.StackableImages;
 import stacker.images.RGBImage;
+import stacker.stacking.AbstractStackingMethod;
 import stacker.stacking.StackingMethodPreTransform;
 
 import java.awt.image.BufferedImage;
@@ -26,15 +27,16 @@ public final class StackerInterface {
     // Long calculation functions:
     public static void calculateOffsetParameters(String[] imagePaths, ProgressBar progressBar) throws IOException {
 
-
         stackableImages = StackableImages.calculateAlignmentParameters(imagePaths, null, progressBar);
 
         System.out.println("THIS IS COMPLETE");
     }
 
-    public static void stackImages1(){
+    public static RGBImage stackImages(AbstractStackingMethod stackMethod, ProgressBar progressBar) throws IOException{
 
-        StackingMethodPreTransform preTransform = new StackingMethodPreTransform("","");
+        RGBImage stackedImage =  stackMethod.stackImages(stackableImages, progressBar);
+        return stackedImage;
+
     }
 
     // Wrapper functions for methods in other package:

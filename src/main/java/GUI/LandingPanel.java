@@ -1,6 +1,6 @@
 package GUI;
 
-import GUI.StackingContext.StackSettingsPanel;
+import GUI.StackingContext.StackContextPanel;
 import stacker.alignment.ImportException;
 
 import javax.swing.*;
@@ -41,6 +41,11 @@ public class LandingPanel extends JPanel {
             JFileChooser chooser = new JFileChooser();
             chooser.showOpenDialog(null);
             File f = chooser.getSelectedFile();
+
+            if(f == null){
+                System.out.println("Nothing selected");
+                return;
+            }
             System.out.println(f.getAbsolutePath());
 
             try {
@@ -56,7 +61,7 @@ public class LandingPanel extends JPanel {
 
             }
 
-            GeneralPanel.setOptionsPanel(new StackSettingsPanel(true));
+            GeneralPanel.setOptionsPanel(new StackContextPanel(true));
             GUILauncher.mainFrame.setSize(new Dimension(900, 600));
             GUILauncher.landingPanel.setVisible(false);
             GUILauncher.generalPanel.setVisible(true);

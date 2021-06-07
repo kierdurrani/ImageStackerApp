@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import GUI.GeneralPanel;
 import GUI.StackerInterface;
-import GUI.StackingContext.StackSettingsPanel;
+import GUI.StackingContext.StackContextPanel;
 
 public class NavigationPanel extends JPanel {
 
@@ -34,17 +34,13 @@ public class NavigationPanel extends JPanel {
 
 
                         System.out.println("Next button clicked. Going to the stacking panel");
-                        JPanel panel = new StackSettingsPanel(false);
+                        JPanel panel = new StackContextPanel(false);
                         GeneralPanel.setOptionsPanel(panel);
                         //GeneralPanel.setOptionsPanel(panel);
 
                         System.out.println("got here");
                         System.out.println(GeneralPanel.getGeneralPanel().optionsPanel);
 
-            // todo- see
-
-
-                    // FIXME - doesnt render properly
 
                 }
             }
