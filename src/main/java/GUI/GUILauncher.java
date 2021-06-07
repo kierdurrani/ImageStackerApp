@@ -11,6 +11,8 @@ import java.io.File;
 
 public class GUILauncher {
 
+    public static String version = " 0.0.1 (pre-alpha)";
+
     public static JFrame mainFrame;
     public static LandingPanel landingPanel = new LandingPanel();
     public static GeneralPanel generalPanel = GeneralPanel.getGeneralPanel();

@@ -1,7 +1,7 @@
-package GUI.FileAndAlignmentSelection;
+package GUI.StackingContext;
 
+import GUI.AlignmentContext.FileSelectPanel;
 import GUI.StackerInterface;
-import stacker.alignment.StackableImages;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,12 +10,7 @@ import java.util.Date;
 
 public class StackSettingsPanel extends JPanel{
 
-    // This field needs populating before continuing.
-    StackableImages stackableImages;
-
-
-
-    public StackSettingsPanel() {
+    public StackSettingsPanel(boolean cameFromLandingPanel) {
 
         String dateString = (new  SimpleDateFormat("yyyy-MM-dd::HH:mm")).format(new Date());
         JTextField outFileField = new JTextField("MyStack:" + dateString + ".png" );
@@ -49,7 +44,8 @@ public class StackSettingsPanel extends JPanel{
         ContainerPanel.add(outFileField);
 
         // Button to stack images
-        JButton stackButton =  new JButton("Stack Images!");
+        JButton stackButton =  new JButton("        Stack Images!          ");
+        stackButton.setPreferredSize(new Dimension(500, 25 ));
         ContainerPanel.add(stackButton);
 
         stackButton.addActionListener(e -> {
@@ -63,12 +59,21 @@ public class StackSettingsPanel extends JPanel{
             stackerThread.start();
         });
 
+        // Back Button
+        JButton backButton =  new JButton("<< Back");
+        stackButton.setPreferredSize(new Dimension(500, 25 ));
+        ContainerPanel.add(backButton);
+        backButton.addActionListener( e -> {
+
+        });
 
 
         this.setVisible(true);
         this.setEnabled(true);
 
         outDirectoryField.setMaximumSize(new Dimension(1000, 25 ) );
+
+
 
 
     }

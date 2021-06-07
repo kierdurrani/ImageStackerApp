@@ -1,6 +1,6 @@
 package GUI;
 
-import GUI.FileAndAlignmentSelection.StackSettingsPanel;
+import GUI.StackingContext.StackSettingsPanel;
 import stacker.alignment.ImportException;
 
 import javax.swing.*;
@@ -9,35 +9,27 @@ import java.io.File;
 
 public class LandingPanel extends JPanel {
 
-    public LandingPanel(){
-
-        ImageIcon logoIcon = new ImageIcon(GUILauncher.resourcesRoot + "\\img.png");
-
-        // this.setLayout(new BorderLayout());
+    public LandingPanel()
+    {
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
+        JPanel logoPanel = new LandingLogo();
+        JPanel buttonContainer = new JPanel();
 
-        //region create buttonPanel
-        //JPanel buttonPanel = new JPanel();
-        //buttonPanel.setLayout(new GridLayout(3,1));
 
-        //buttonPanel.setToolTipText("");
-        JLabel menuImage = new JLabel( logoIcon, JLabel.CENTER);
+        // region button setup
         JButton scratchButton = new JButton("Select images and align");
         JButton importButton = new JButton("Import existing alignment settings");
         JButton editButton = new JButton("Edit saved photo");
 
-        // menuImage.setPreferredSize(new Dimension(500, 500));
+        scratchButton.setMinimumSize(new Dimension(500,25));
+        importButton.setMinimumSize(new Dimension(500,25));
+        editButton.setMinimumSize(new Dimension(500,25));
+
         scratchButton.setPreferredSize(new Dimension(500,25));
         importButton.setPreferredSize(new Dimension(500,25));
         editButton.setPreferredSize(new Dimension(500,25));
-
-        menuImage.setMaximumSize(new Dimension(1920, 1080));
-        scratchButton.setMaximumSize(new Dimension(1920,25));
-        importButton.setMaximumSize(new Dimension(1920,25));
-        editButton.setMaximumSize(new Dimension(1920,25));
-
 
         scratchButton.addActionListener(e -> {
             GUILauncher.mainFrame.setSize(new Dimension(900, 600));
@@ -64,7 +56,7 @@ public class LandingPanel extends JPanel {
 
             }
 
-            GeneralPanel.setOptionsPanel(new StackSettingsPanel());
+            GeneralPanel.setOptionsPanel(new StackSettingsPanel(true));
             GUILauncher.mainFrame.setSize(new Dimension(900, 600));
             GUILauncher.landingPanel.setVisible(false);
             GUILauncher.generalPanel.setVisible(true);
@@ -73,15 +65,17 @@ public class LandingPanel extends JPanel {
         });
         // TODO: Implement functionality of other button(s).
 
-        this.add(menuImage);
-        this.add(scratchButton);
-        this.add(importButton);
-        this.add(editButton);
-        //endregion create buttonPanel
+        buttonContainer.setLayout(new GridLayout(3,1));
+        buttonContainer.setPreferredSize(new Dimension(500,75));
+        buttonContainer.setMaximumSize(new Dimension(10000,75));
 
-        // TODO: fix layout to make more aesthetic when expanded.
-       // this.add( buttonPanel, BorderLayout.SOUTH);
+        buttonContainer.add(scratchButton);
+        buttonContainer.add(importButton);
+        buttonContainer.add(editButton);
+        // endregion
 
+        this.add(logoPanel);
+        this.add(buttonContainer);
     }
 
 }

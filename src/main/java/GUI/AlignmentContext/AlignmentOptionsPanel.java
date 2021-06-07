@@ -1,4 +1,4 @@
-package GUI.FileAndAlignmentSelection;
+package GUI.AlignmentContext;
 
 import GUI.GeneralPanel;
 import GUI.StackerInterface;
@@ -10,16 +10,16 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class AlignmentPanel extends JPanel {
+public class AlignmentOptionsPanel extends JPanel {
 
-    private FileAndAlignmentPanel parentFileAndAlignmentPanel;
+    private AlignmentContextPanel parentAlignmentContextPanel;
     JButton saveParamButton = new JButton("Save Parameters");
     JTextArea jTextArea = new JTextArea("Text Display..");
 
 
-    AlignmentPanel(FileAndAlignmentPanel parent) {
+    AlignmentOptionsPanel(AlignmentContextPanel parent) {
 
-        this.parentFileAndAlignmentPanel = parent;
+        this.parentAlignmentContextPanel = parent;
         setBorder(BorderFactory.createTitledBorder("Alignment Options"));
 
         // TODO: Allow user to modify star detection params & method
@@ -35,7 +35,7 @@ public class AlignmentPanel extends JPanel {
         testStarDetection.addActionListener(e -> {
             // TODO: Only enable button if a proper pic is selected.
             testStarDetection.setEnabled(false);
-            System.out.println( parentFileAndAlignmentPanel.fileSelectionPanel.fileJList.getSelectedValue() );
+            System.out.println( parentAlignmentContextPanel.fileSelectionPanel.fileJList.getSelectedValue() );
             BufferedImage markedImage = StackerInterface.markStarsInImage(GeneralPanel.getPreviewImage());
             GeneralPanel.setPreviewImage( markedImage );
             testStarDetection.setEnabled(true);
@@ -47,14 +47,14 @@ public class AlignmentPanel extends JPanel {
         calcAlignParamsButton.addActionListener(e -> {
 
             System.out.println("Clicked Calculate Alignment button..");
-            parentFileAndAlignmentPanel.setNavigationButtonsEnabled(false);
+            parentAlignmentContextPanel.setNavigationButtonsEnabled(false);
             testStarDetection.setEnabled(false);
             calcAlignParamsButton.setEnabled(false);
 
             jTextArea.setText("Calculating Stacking Parameters..");
 
             // Obtain file paths from list and stack!
-            ListModel list = parentFileAndAlignmentPanel.fileSelectionPanel.fileJList.getModel();
+            ListModel list = parentAlignmentContextPanel.fileSelectionPanel.fileJList.getModel();
             String[] imagePaths = new String[list.getSize()];
 
             for (int i = 0; i < list.getSize(); i++) {
@@ -88,7 +88,7 @@ public class AlignmentPanel extends JPanel {
                 }catch(IOException exception){
                     // TODO - implement error handling.
                 }
-                parentFileAndAlignmentPanel.setNavigationButtonsEnabled(true);
+                parentAlignmentContextPanel.setNavigationButtonsEnabled(true);
                 calcAlignParamsButton.setEnabled(true);
                 testStarDetection.setEnabled(true);
 

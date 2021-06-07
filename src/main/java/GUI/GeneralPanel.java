@@ -1,6 +1,6 @@
 package GUI;
 
-import GUI.FileAndAlignmentSelection.FileAndAlignmentPanel;
+import GUI.AlignmentContext.AlignmentContextPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +17,7 @@ public final class GeneralPanel extends JPanel {
     // constructor for singleton
     private GeneralPanel(){
 
-        optionsPanel = new FileAndAlignmentPanel(this);
+        optionsPanel = new AlignmentContextPanel(this);
         previewPanel = new PreviewPanel();
 
         this.setLayout(new BorderLayout());

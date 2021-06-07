@@ -1,4 +1,4 @@
-package GUI.FileAndAlignmentSelection;
+package GUI.AlignmentContext;
 
 import GUI.GUILauncher;
 
@@ -8,17 +8,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import GUI.GeneralPanel;
 import GUI.StackerInterface;
+import GUI.StackingContext.StackSettingsPanel;
 
 public class NavigationPanel extends JPanel {
 
-    FileAndAlignmentPanel parent;
+    public JButton backButton = new JButton("<< Back");
+    public JButton nextButton = new JButton("Next >>");
 
-    JButton backButton = new JButton("<< Back");
-    JButton nextButton = new JButton("Next >>");
-
-    NavigationPanel(FileAndAlignmentPanel parentPanel){
-
-        this.parent = parentPanel;
+    NavigationPanel(AlignmentContextPanel parentPanel){
 
         backButton.addActionListener(new ActionListener() {
             @Override
@@ -37,7 +34,7 @@ public class NavigationPanel extends JPanel {
 
 
                         System.out.println("Next button clicked. Going to the stacking panel");
-                        JPanel panel = new StackSettingsPanel();
+                        JPanel panel = new StackSettingsPanel(false);
                         GeneralPanel.setOptionsPanel(panel);
                         //GeneralPanel.setOptionsPanel(panel);
 

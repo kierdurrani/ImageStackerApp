@@ -1,9 +1,11 @@
 package GUI;
 
-import stacker.*;
-import stacker.alignment.*;
+import stacker.ImageStackerMain;
+import stacker.ProgressBar;
+import stacker.alignment.AMethodStarDetection;
+import stacker.alignment.ImportException;
+import stacker.alignment.StackableImages;
 import stacker.images.RGBImage;
-import stacker.stacking.AbstractStackingMethod;
 import stacker.stacking.StackingMethodPreTransform;
 
 import java.awt.image.BufferedImage;

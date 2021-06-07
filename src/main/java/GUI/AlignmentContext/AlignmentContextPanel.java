@@ -1,26 +1,26 @@
-package GUI.FileAndAlignmentSelection;
+package GUI.AlignmentContext;
 
 import GUI.GeneralPanel;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class FileAndAlignmentPanel extends JPanel {
+public class AlignmentContextPanel extends JPanel {
 
     // StackableImages stackableImages; // This field needs populating before continuing.
     // TODO - if stackable images already exists in the parent, import this and set all enabled?
 
     FileSelectPanel fileSelectionPanel;
-    AlignmentPanel alignmentPanel;
+    AlignmentOptionsPanel alignmentPanel;
     NavigationPanel navigationPanel;
 
-    public FileAndAlignmentPanel(GeneralPanel parentGeneralPanel) {
+    public AlignmentContextPanel(GeneralPanel parentGeneralPanel) {
 
         String[] defaultValues = {
                 "C:\\Users\\Kier\\Developing\\Space Image Stack Project\\PICTURE LIBRARY\\282CANON\\IMG_1311.JPG",
                 "C:\\Users\\Kier\\Developing\\Space Image Stack Project\\PICTURE LIBRARY\\282CANON\\IMG_1320.JPG"};
         fileSelectionPanel = new FileSelectPanel(defaultValues);
-        alignmentPanel = new AlignmentPanel(this);
+        alignmentPanel = new AlignmentOptionsPanel(this);
         navigationPanel = new NavigationPanel(this);
 
         // Create window frame, add scroll pain and button container.

@@ -1,4 +1,4 @@
-package GUI.FileAndAlignmentSelection;
+package GUI.AlignmentContext;
 
 import GUI.GeneralPanel;
 
@@ -17,9 +17,9 @@ public class FileSelectPanel extends JPanel {
 
     JList fileJList;
   //  FileAndAlignmentPanel parentFileAndAlignmentPanel;
-    JPanel buttonContainer = new JPanel();
-    JButton ButtonRemoveImg = new JButton("Remove Image(s)");
-    JButton ButtonAddImg = new JButton("Add Image(s)");
+    public JPanel buttonContainer = new JPanel();
+    public JButton ButtonRemoveImg = new JButton("Remove Image(s)");
+    public JButton ButtonAddImg = new JButton("Add Image(s)");
 
     public FileSelectPanel(String[] defaultValues){
         //this.parentFileAndAlignmentPanel = parentPanel;
