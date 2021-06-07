@@ -2,3 +2,4 @@
 *.class
 /.idea/workspace.xml
 /target/*
+/src/main/java/quicktesting
