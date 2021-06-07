@@ -33,7 +33,7 @@ public class LandingPanel extends JPanel {
         editButton.setPreferredSize(new Dimension(500,25));
 
         scratchButton.addActionListener(e -> {
-            GUILauncher.mainFrame.setSize(new Dimension(900, 600));
+            GUILauncher.mainFrame.setSize(new Dimension(1000, 600));
             GUILauncher.landingPanel.setVisible(false);
             GeneralPanel.setOptionsPanel(new AlignmentContextPanel());
             GUILauncher.generalPanel.setVisible(true);
@@ -64,7 +64,7 @@ public class LandingPanel extends JPanel {
             }
 
             GeneralPanel.setOptionsPanel(new StackContextPanel(null));
-            GUILauncher.mainFrame.setSize(new Dimension(900, 600));
+            GUILauncher.mainFrame.setSize(new Dimension(1000, 600));
             GUILauncher.landingPanel.setVisible(false);
             GUILauncher.generalPanel.setVisible(true);
 

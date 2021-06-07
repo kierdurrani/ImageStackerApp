@@ -25,6 +25,7 @@ public final class GeneralPanel extends JPanel {
         this.add(previewPanel, BorderLayout.CENTER);
 
         optionsPanel.setPreferredSize(new Dimension(400,1080));
+        previewPanel.setPreferredSize(new Dimension(500,1080));
 
     }
 
